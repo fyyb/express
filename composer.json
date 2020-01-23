@@ -1,0 +1,29 @@
+{
+  "name": "fyyb/fyyb-router",
+  "description": "PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.",
+  "type": "library",
+  "version": "0.1",
+  "keywords": [
+    "framework",
+    "micro",
+    "api",
+    "router"
+  ],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Joao Netto",
+      "email": "jnetto@fyyb.com.br",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fyyb\\": "Fyyb"
+    }
+  }
+}
