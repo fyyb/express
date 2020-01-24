@@ -14,11 +14,14 @@ class Router extends Singleton implements RouterInterface
     private $request;
     private $response;
     private $args;
-
     private $dirRoutes;
     private $last = array();
     private $lastGroup = false;
     
+    private $corsOrigin = '*';
+    private $corsMethods = '*';
+    private $corsHeaders = 'true';
+
     public function map(Array $methods, String $pattern, $callable)
     {   
         if ($this->lastGroup === false) $this->last = [];
@@ -155,6 +158,9 @@ class Router extends Singleton implements RouterInterface
     
     public function run()
     {
+        header('Access-Control-Allow-Origin: ' . $this->corsOrigin);
+        header('Access-Control-Allow-Methods: ' . $this->corsMethods);
+        header('Access-Control-Allow-Headers: ' . $this->corsHeaders);
         $this->match();
     }
       
@@ -261,5 +267,21 @@ class Router extends Singleton implements RouterInterface
     {   
         $mid = MiddlewareHandler::getInstance();
         return array($this->map, $mid->getMids());
+    }
+
+    /**
+     * Cors config
+     */
+    public function setOriginCors(String $value = '*') {
+        $this->corsOrigin = $value;
+        return $this;
+    }
+    public function setMethodsCors(String $value = '*') {
+        $this->corsMethods = $value;
+        return $this;
+    }
+    public function setHeadersCors(String $value = 'true') {
+        $this->corsHeaders = $value;
+        return $this;
     }
 }
