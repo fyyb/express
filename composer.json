@@ -2,7 +2,7 @@
   "name": "fyyb/fyyb-router",
   "description": "PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.",
   "type": "library",
-  "version": "0.1",
+  "version": "0.3",
   "keywords": [
     "framework",
     "micro",
