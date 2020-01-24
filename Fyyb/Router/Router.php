@@ -133,10 +133,12 @@ class Router extends Singleton implements RouterInterface
 
                     if (is_string($call)) {
                         $this->callableController($call);
+                        exit;
                     };
                     
                     if (is_callable($call)) {
                         $this->callableFunction($call);
+                        exit;
                     };                  
                     break;
                 };
