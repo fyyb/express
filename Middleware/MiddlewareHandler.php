@@ -12,15 +12,20 @@ class MiddlewareHandler extends Singleton
     public function add(Array $last, $middlewares)
     {   
         foreach ($last as $method => $patterns) {
-            if (!array_key_exists($method, $this->Middlewares)) $this->Middlewares[$method] = [];
+            if (!array_key_exists($method, $this->Middlewares)) {
+                $this->Middlewares[$method] = [];
+            };            
             foreach ($patterns as $pt) {
                 $x = array();
                 $y = array();
-                
                 foreach ($middlewares as $mid) {
                     $x = $this->Middlewares[$method][$pt] ?? array();
                     $y[] = $mid;
-                    $error[] = array("x" => $x, "y" => $y, "merge" => array_merge($y,$x));
+                    $error[] = array(
+                        "x" => $x, 
+                        "y" => $y, 
+                        "merge" => array_merge($y,$x)
+                    );
                 };
                 $this->Middlewares[$method][$pt] = array_merge($y,$x);
             };
@@ -38,17 +43,21 @@ class MiddlewareHandler extends Singleton
 
     public static function call($middleware, $request, $response, $next)
     {
-        if(is_string($middleware)) {
-            
+        if(is_string($middleware)) {            
             if (!empty($middleware)) {
                 $middle = explode(':', $middleware); 
                 if (is_array($middle) && count($middle) === 2) {
                     $class  = trim($middle[0]);
                     $action = trim($middle[1]);
-                    
                     if (class_exists($class) && method_exists($class, $action)) {
                         $m = new $class;
-                        return call_user_func_array(array($m, $action), [$request, $response, $next]);
+                        return call_user_func_array(
+                            array($m, $action), [
+                                $request, 
+                                $response, 
+                                $next
+                            ]
+                        );
                     }; 
                 }; 
             };
@@ -60,15 +69,16 @@ class MiddlewareHandler extends Singleton
         if(is_callable($middleware)) {
             return $middleware($request, $response, $next);
         };
-
     }
 
     public static function executeMiddlewares(Array $middlewares, &$request, &$response)
     {
         foreach ($middlewares as $middleware) {
-            $response = self::call($middleware, $request, $response, function($request, $response){
-                return $response;
-            });
+            $response = self::call($middleware, $request, $response, 
+                function($request, $response){ 
+                    return $response;
+                }
+            );
         };
     }
 

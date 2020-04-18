@@ -1,6 +1,6 @@
 <?php
 
-namespace Fyyb\Http;
+namespace Fyyb;
 
 use Fyyb\Http\HttpPopulateTrait;
 
@@ -12,12 +12,10 @@ class Response
     {
         if (empty($key)) {
             return $this->data;
-
         } else if (array_key_exists($key, $this->data)){
             return $this->{$key};
-        
         } else {
-            return '';
+            return;
         };
     }
 
@@ -54,13 +52,11 @@ class Response
     public function hasHeader($header)
     {
         $headers = $this->getHeaders();
-        
         foreach ($headers as $h => $value) {
             if ($h === $header) {
                 return true;
             };
         };
-
         return false;
     }
 
@@ -68,8 +64,7 @@ class Response
     {
         if ($this->hasHeader($header)) {
             $oldValue = $this->getHeader($header);
-            $newValue = $oldValue.', '.$value; 
-            
+            $newValue = $oldValue.', '.$value;
             $this->withoutHeader($header);
             $this->setHeader($header, $newValue);
         }
@@ -511,9 +506,3 @@ class Response
     }
 
 }
-
-
-
-
-
-

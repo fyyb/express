@@ -1,11 +1,12 @@
 <?php
 
-namespace Fyyb\Router;
+namespace Fyyb;
 
 use \Fyyb\Support\Singleton;
+use \Fyyb\Interfaces\RouterInterface;
 use \Fyyb\Middleware\MiddlewareHandler;
-use \Fyyb\Http\Request;
-use \Fyyb\Http\Response;
+use \Fyyb\Request;
+use \Fyyb\Response;
 
 class Router extends Singleton implements RouterInterface
 {
@@ -22,7 +23,7 @@ class Router extends Singleton implements RouterInterface
     private $corsMethods = '*';
     private $corsHeaders = 'true';
 
-    public function map(Array $methods, String $pattern, $callable)
+    public function map(Array $methods, String $pattern, $callable) :Router
     {   
         if ($this->lastGroup === false) $this->last = [];
         
@@ -79,22 +80,18 @@ class Router extends Singleton implements RouterInterface
 		return $this;
     }
 
-    public function getLast()
+    public function run()
     {
-        return $this->last;
+        header('Access-Control-Allow-Origin: ' . $this->corsOrigin);
+        header('Access-Control-Allow-Methods: ' . $this->corsMethods);
+        header('Access-Control-Allow-Headers: ' . $this->corsHeaders);
+        $this->match();
+        exit;
     }
 
-    protected function getUri() :String
+    private function match()
 	{
-        // Pega a URL;
-        $uri = $_GET['url'] ?? '';
-        $uri = (substr($uri,-1) === '/')?substr($uri,0,strlen($uri)-1):$uri;
-        $uri = '/'.$uri;
-        return $uri;
-    }
 
-	private function match()
-	{
         $this->request  = new Request();
         $this->response = new Response();
 
@@ -103,51 +100,43 @@ class Router extends Singleton implements RouterInterface
         if (isset($this->map[$method])) {
             // Loop em todas as routes
             foreach ($this->map[$method] as $pt => $call) {       
-                
                 // identifica os argumentos e substitui por regex
                 $pattern = preg_replace('(\{[a-z0-9]{0,}\})', '([a-z0-9]{0,})', $pt);
-                
                 // faz o match de URL
-                if (preg_match('#^('.$pattern.')*$#i', $this->getUri(), $matches) === 1) {
-                    array_shift($matches);array_shift($matches);
-                    
+                if (preg_match('#^('.$pattern.')*$#i', $this->request->getUri(), $matches) === 1) {
+                    array_shift($matches);
+                    array_shift($matches);
                     //Pega todos os argumentos para associar
                     $items = array();
                     if (preg_match_all('(\{[a-z0-9]{0,}\})', $pt, $m)) {
                         $items = preg_replace('(\{|\})', '', $m[0]);
-                    };
-                                    
+                    };                                    
                     // Faz a associação dos argumentos
                     $args = array();
                     foreach ($matches as $key => $match) {
                         $args[$items[$key]] = $match;
                     };
-                    
                     // seta os argumentos
                     $this->setArgs($args);
-                    
                     // Verifica se esta rota possui Middlewares Cadastrados
                     $mid = MiddlewareHandler::getInstance();
                     $midThisRoute = $mid->getMiddlewaresThisRoute($method, $pt);
-
                     if ($midThisRoute && count($midThisRoute) > 0) {
                         $mid::executeMiddlewares($midThisRoute, $this->request, $this->response);
                     };
-
                     if (is_string($call)) {
                         $this->callableController($call);
                         exit;
                     };
-                    
                     if (is_callable($call)) {
                         $this->callableFunction($call);
                         exit;
                     };                  
                     break;
                 };
-            };
-            
+            };            
         };
+
         $this->response->json([
             'error' => [
                 'code' => '0001',
@@ -156,51 +145,6 @@ class Router extends Singleton implements RouterInterface
         ],404);
     }
     
-    public function run()
-    {
-        header('Access-Control-Allow-Origin: ' . $this->corsOrigin);
-        header('Access-Control-Allow-Methods: ' . $this->corsMethods);
-        header('Access-Control-Allow-Headers: ' . $this->corsHeaders);
-        $this->match();
-    }
-      
-    /**
-    *   Implementação da funcionalidade 'Group'
-    *   possibilidade de criar grupos de Rotas passando um pattern raiz 
-    */
-    public function group(String $pattern, $callback)
-    {
-        $this->lastGroup = true;
-        call_user_func($callback, new RouterGroup($pattern));
-        return $this;
-    }
-    
-    /**
-    *   Implementação da funcionalidade 'Use'
-    *   possibilidade de criar as Rotas em arquivos diferentes 
-    */
-    public function setDirRoutes($dirRoutes)
-    {
-        $this->dirRoutes = $dirRoutes; 
-        return $this;
-    }
-
-    protected function getDirRoutes()
-    {
-        return $this->dirRoutes; 
-    }
-
-    public function use(String $pattern, $fileRoute)
-    {
-        if ($this->getDirRoutes() === null) {
-            echo 'Diretorio de Rotas não informado';
-            exit;
-        };
-
-        $useRoute = new RouterUse($pattern);
-        $useRoute->load($fileRoute);
-    }
-
     private function callableController($callable)
     {
         if (!empty($callable)) {
@@ -211,7 +155,13 @@ class Router extends Singleton implements RouterInterface
                 
                 if (class_exists($class) && method_exists($class, $action)) {
                     $controller = new $class;
-                    return call_user_func_array(array($controller, $action), [$this->request, $this->response, $this->getArgs()]);
+                    return call_user_func_array(
+                        array($controller, $action), [
+                            $this->request, 
+                            $this->response, 
+                            $this->getArgs()
+                        ]
+                    );
                 }; 
             }; 
         };
@@ -246,8 +196,51 @@ class Router extends Singleton implements RouterInterface
         return $this->args;
     }
 
+    public function getLast()
+    {
+        return $this->last;
+    }
+
     /**
-     * Implementação da funcionalidade de Middlewares
+    *   Implementação da funcionalidade 'group'
+    *   possibilidade de criar grupos de Rotas passando um pattern raiz 
+    */
+    public function group(String $pattern, $callback)
+    {
+        $this->lastGroup = true;
+        call_user_func($callback, new \Fyyb\Router\RouterGroup($pattern));
+        return $this;
+    }
+    
+    /**
+    *   Implementação da funcionalidade 'use'
+    *   possibilidade de criar as Rotas em arquivos diferentes 
+    */
+    public function setDirRoutes($dirRoutes)
+    {
+        $this->dirRoutes = $dirRoutes; 
+        return $this;
+    }
+
+    protected function getDirRoutes()
+    {
+        return $this->dirRoutes; 
+    }
+
+    public function use(String $pattern, $fileRoute)
+    {
+        if ($this->getDirRoutes() === null) {
+            echo 'Diretorio de Rotas não informado';
+            exit;
+        };
+
+        $useRoute = new \Fyyb\Router\RouterUse($pattern);
+        $useRoute->load($fileRoute);
+    }
+
+    /**
+     *  Implementação da funcionalidade de 'add'
+     *  possibilidade de criar Middlewares
      */
     public function add(...$mids)
     {
@@ -270,17 +263,22 @@ class Router extends Singleton implements RouterInterface
     }
 
     /**
-     * Cors config
+     *  Settings Cors
      */
-    public function setOriginCors(String $value = '*') {
+    public function setOriginCors(String $value = '*') 
+    {
         $this->corsOrigin = $value;
         return $this;
     }
-    public function setMethodsCors(String $value = '*') {
+    
+    public function setMethodsCors(String $value = '*') 
+    {
         $this->corsMethods = $value;
         return $this;
     }
-    public function setHeadersCors(String $value = 'true') {
+    
+    public function setHeadersCors(String $value = 'true') 
+    {
         $this->corsHeaders = $value;
         return $this;
     }

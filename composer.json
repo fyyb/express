@@ -1,5 +1,5 @@
 {
-  "name": "fyyb/fyyb-router",
+  "name": "fyyb/express",
   "description": "PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.",
   "version": "1.0",
   "keywords": [

@@ -2,7 +2,8 @@
 
 namespace Fyyb\Router;
 
-use \Fyyb\Router\MiddlewareHandler;
+use \Fyyb\Interfaces\RouterInterface;
+use \Fyyb\Middleware\MiddlewareHandler;
 
 class RouterGroup implements RouterInterface
 {

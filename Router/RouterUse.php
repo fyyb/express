@@ -2,6 +2,8 @@
 
 namespace Fyyb\Router;
 
+use Fyyb\Interfaces\RouterInterface;
+
 class RouterUse implements RouterInterface
 {
     private $use;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fyyb\Router;
+namespace Fyyb\Interfaces;
 
 interface RouterInterface
 {
