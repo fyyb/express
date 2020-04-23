@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fyyb\Router;
 
-use \Fyyb\Interfaces\RouterInterface;
-use \Fyyb\Middleware\MiddlewareHandler;
+use Fyyb\Router;
+use Fyyb\Interfaces\RouterInterface;
+use Fyyb\Middleware\MiddlewareHandler;
 
 class RouterGroup implements RouterInterface
 {
@@ -20,37 +23,37 @@ class RouterGroup implements RouterInterface
     
     public function map(Array $method, String $pattern, $callable): RouterGroup
     {
-        $this->router->map($method, $pattern, $callable);
+        $this->router->map($method, $this->group.$pattern, $callable);
         return $this;
 	}
 
     public function get(String $pattern, $callable): RouterGroup
     {
-        $this->map(['GET'], $this->group.$pattern, $callable);
+        $this->map(['GET'], $pattern, $callable);
         return $this;
 	}
 
     public function post(String $pattern, $callable): RouterGroup
     {
-		$this->map(['POST'], $this->group.$pattern, $callable);
+		$this->map(['POST'], $pattern, $callable);
 		return $this;
 	}
 
     public function put(String $pattern, $callable): RouterGroup
     {
-		$this->map(['PUT'], $this->group.$pattern, $callable);
+		$this->map(['PUT'], $pattern, $callable);
 		return $this;
 	}
 
     public function delete(String $pattern, $callable): RouterGroup
     {
-		$this->map(['DELETE'], $this->group.$pattern, $callable);
+		$this->map(['DELETE'], $pattern, $callable);
 		return $this;
 	}
 
     public function any(String $pattern, $callable): RouterGroup
     {
-		$this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $this->group.$pattern, $callable);
+		$this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $pattern, $callable);
 		return $this;
     }
 

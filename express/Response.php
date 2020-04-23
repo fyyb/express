@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fyyb;
 
 use Fyyb\Http\HttpPopulateTrait;
@@ -17,6 +19,13 @@ class Response
         } else {
             return;
         };
+    }
+
+    public function send($html, $statusCode = 200)
+    {
+        $this->setResposeWithHeaderAndStatusCode([], $statusCode);
+        echo $html;
+        exit;
     }
 
     public function json($data = array(), $statusCode = 200)
@@ -500,7 +509,6 @@ class Response
             
             default:
                 $arr[] = $this->OK($data);
-            
         }
         return $arr;
     }

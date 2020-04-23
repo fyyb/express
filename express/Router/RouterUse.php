@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fyyb\Router;
 
+use Fyyb\Router;
 use Fyyb\Interfaces\RouterInterface;
+use Fyyb\Middleware\MiddlewareHandler;
 
 class RouterUse implements RouterInterface
 {
@@ -25,51 +29,54 @@ class RouterUse implements RouterInterface
 
     private function loadRouteFile($f)
     {
-        $dir = $this->router->getDirRoutes();
-        $file = $dir.DIRECTORY_SEPARATOR.$f.'.php';
+        $f = $f.'.php';
 
-        if (file_exists($file)) {
-            require_once $file;
+        if ($this->router->getDirRoutes()) {
+            $f = $dir.DIRECTORY_SEPARATOR.$f;
+        }
+
+        if (file_exists($f)) {
+            require_once $f;
         } else {
             echo 'Arquivo de Rotas Não Encontrado <br>';
-            echo 'em: '.$file;
+            echo 'em: '.$f;
             exit;
         };
     }
 
     public function map(Array $method, String $pattern, $callable): RouterUse
     {
-        $this->router->map($method, $pattern, $callable);
+        $this->router->map($method, $this->use.$pattern, $callable);
         return $this;
 	}
 
     public function get(String $pattern, $callable): RouterUse
     {
-        $this->map(['GET'], $this->use.$pattern, $callable);
+        $this->map(['GET'], $pattern, $callable);
         return $this;
 	}
 
     public function post(String $pattern, $callable): RouterUse
     {
-		$this->map(['POST'], $this->use.$pattern, $callable);
+		$this->map(['POST'], $pattern, $callable);
 		return $this;
 	}
 
     public function put(String $pattern, $callable): RouterUse
     {
-		$this->map(['PUT'], $this->use.$pattern, $callable);
+		$this->map(['PUT'], $pattern, $callable);
 		return $this;
 	}
 
     public function delete(String $pattern, $callable): RouterUse
     {
-		$this->map(['DELETE'], $this->use.$pattern, $callable);
+		$this->map(['DELETE'], $pattern, $callable);
 		return $this;
 	}
 
     public function any(String $pattern, $callable): RouterUse
     {
-		$this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $this->use.$pattern, $callable);
+		$this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $pattern, $callable);
 		return $this;
     }
 
@@ -80,5 +87,15 @@ class RouterUse implements RouterInterface
         };
 
         $this->middlewares->add($this->router->getLast(), $mids);
+    }
+    
+    /**
+    *   Implementação da funcionalidade 'group'
+    *   possibilidade de criar grupos de Rotas passando um pattern raiz 
+    */
+    public function group(String $pattern, $callback)
+    {
+        $this->router->group($this->use.$pattern, $callback);
+        return $this;
     }
 }

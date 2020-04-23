@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fyyb;
 
 use Fyyb\Http\HttpPopulateTrait;
+use Fyyb\Support\Utils;
 
 class Request
 {
@@ -26,14 +29,14 @@ class Request
             if (ENVIRONMENT === 'dev') {
                 if (defined('BASE_DIR')) {
                     $uri = '/'.str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
-                    $uri = str_replace('//', '/', $uri);
                 };
             };
         } else {
-            $uri = '/'.$_SERVER['REQUEST_URI'];
-            $uri = str_replace('//', '/', $uri);
+            $uri = '/'.$_SERVER['REQUEST_URI'];            
         };
-        return $uri;
+
+        $uri = str_replace('?'.$_SERVER['QUERY_STRING'], '', $uri);
+        return Utils::clearURI($uri);
     }
 
     public function getMethod(): String
@@ -41,32 +44,25 @@ class Request
         return $_SERVER['REQUEST_METHOD'];
     }
 
+    public function getParams(): Array
+    {
+        return $this->params;
+    }
+
     public function getParsedBody(): Array
     {
-        switch ($this->getMethod()) {
-            case 'GET':
-                return (array) $_GET;
-                break;
-            case 'PUT':
-            case 'DELETE':
-                $data = json_decode(file_get_contents('php://input'));
-                return (array) $data;
-                break;
-            case 'POST':
-                $data = json_decode(file_get_contents('php://input'));
-                if (is_null($data)) {
-                    $data = $_POST;
-                };
-                return (array) $data;
-                break;
-        };
+        $data = json_decode(file_get_contents('php://input'));
+        return array_merge((array) $data, $_POST);
+    }
+
+    public function getUploadedFiles(): Array
+    {
+        return $_FILES;
     }
 
     public function getQueryString(): Array
     {
-        $qs = explode('&', $_SERVER['QUERY_STRING']);
-        array_shift($qs);
-        return $qs;
+        return $_GET;
     }
 
     public function getHeaders(): Array

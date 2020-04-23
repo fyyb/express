@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Fyyb;
 
-use \Fyyb\Support\Singleton;
-use \Fyyb\Interfaces\RouterInterface;
-use \Fyyb\Middleware\MiddlewareHandler;
-use \Fyyb\Request;
-use \Fyyb\Response;
+use Fyyb\Error\HtmlErrorRenderer;
+use Fyyb\Error\JsonErrorRenderer;
+use Fyyb\Support\Singleton;
+use Fyyb\Support\Utils;
+use Fyyb\Interfaces\RouterInterface;
+use Fyyb\Middleware\MiddlewareHandler;
+use Fyyb\Request;
+use Fyyb\Response;
 
 class Router extends Singleton implements RouterInterface
 {
@@ -14,7 +19,6 @@ class Router extends Singleton implements RouterInterface
     private $middlewares;
     private $request;
     private $response;
-    private $args;
     private $dirRoutes;
     private $last = array();
     private $lastGroup = false;
@@ -23,12 +27,15 @@ class Router extends Singleton implements RouterInterface
     private $corsMethods = '*';
     private $corsHeaders = 'true';
 
+    private $reportError = 'html';
+
     public function map(Array $methods, String $pattern, $callable) :Router
     {   
         if ($this->lastGroup === false) $this->last = [];
         
         if (is_array($methods)) {
             foreach ($methods as $method) {
+                $method = strtoupper($method);
                 if (!array_key_exists($method, $this->map)) $this->map[$method] = [];
                 if (!array_key_exists($method, $this->last)) $this->last[$method] = [];
              
@@ -38,7 +45,8 @@ class Router extends Singleton implements RouterInterface
                 foreach (explode('[', str_replace(']', '', $pattern)) as $route) {
                     $r = $base.$route;
                     $base = $r;
-                    $routes[] = str_replace('//', '/', $r);
+                    
+                    $routes[] = Utils::clearURI($r); 
                 };
                 
                 foreach (array_reverse($routes) as $r) {
@@ -80,7 +88,7 @@ class Router extends Singleton implements RouterInterface
 		return $this;
     }
 
-    public function run()
+    public function run() :void
     {
         header('Access-Control-Allow-Origin: ' . $this->corsOrigin);
         header('Access-Control-Allow-Methods: ' . $this->corsMethods);
@@ -89,27 +97,25 @@ class Router extends Singleton implements RouterInterface
         exit;
     }
 
-    private function match()
+    private function match() :void
 	{
-
         $this->request  = new Request();
         $this->response = new Response();
-
         $method = $this->request->getMethod();
         
         if (isset($this->map[$method])) {
             // Loop em todas as routes
             foreach ($this->map[$method] as $pt => $call) {       
                 // identifica os argumentos e substitui por regex
-                $pattern = preg_replace('(\{[a-z0-9]{0,}\})', '([a-z0-9]{0,})', $pt);
+                $pattern = preg_replace('(\:[a-z0-9]{0,})', '([a-z0-9]{0,})', $pt);
                 // faz o match de URL
                 if (preg_match('#^('.$pattern.')*$#i', $this->request->getUri(), $matches) === 1) {
                     array_shift($matches);
                     array_shift($matches);
                     //Pega todos os argumentos para associar
                     $items = array();
-                    if (preg_match_all('(\{[a-z0-9]{0,}\})', $pt, $m)) {
-                        $items = preg_replace('(\{|\})', '', $m[0]);
+                    if (preg_match_all('(\:[a-z0-9]{0,})', $pt, $m)) {
+                        $items = preg_replace('(\:)', '', $m[0]);
                     };                                    
                     // Faz a associação dos argumentos
                     $args = array();
@@ -117,7 +123,7 @@ class Router extends Singleton implements RouterInterface
                         $args[$items[$key]] = $match;
                     };
                     // seta os argumentos
-                    $this->setArgs($args);
+                    $this->request->params = $args;
                     // Verifica se esta rota possui Middlewares Cadastrados
                     $mid = MiddlewareHandler::getInstance();
                     $midThisRoute = $mid->getMiddlewaresThisRoute($method, $pt);
@@ -137,12 +143,11 @@ class Router extends Singleton implements RouterInterface
             };            
         };
 
-        $this->response->json([
-            'error' => [
-                'code' => '0001',
-                'msg'  => 'Route Not Found'
-            ]
-        ],404);
+        if($this->reportError === 'html') {
+            new HtmlErrorRenderer(404);
+        } else if($this->reportError === 'json') {
+            new JsonErrorRenderer(404);
+        };
     }
     
     private function callableController($callable)
@@ -158,42 +163,27 @@ class Router extends Singleton implements RouterInterface
                     return call_user_func_array(
                         array($controller, $action), [
                             $this->request, 
-                            $this->response, 
-                            $this->getArgs()
+                            $this->response
                         ]
                     );
                 }; 
             }; 
         };
 
-        echo $this->response->json([
-            'error' => [
-                'code' => '0002',
-                'msg' => 'Route Not Implemented'
-            ]
-        ],501);
-        
-        exit;       
+        if($this->reportError === 'html') {
+            new HtmlErrorRenderer(501);
+
+        } else if($this->reportError === 'json') {
+            new JsonErrorRenderer(501);
+        };      
     }
 
     private function callableFunction($callable)
     {
         $callable(
             $this->request,
-            $this->response,
-            $this->getArgs()
+            $this->response
         );
-    }
-
-    private function setArgs($args = array())
-    {
-        $this->args = $args;
-        return $this;
-    }
-    
-    private function getArgs()
-    {
-        return $this->args;
     }
 
     public function getLast()
@@ -222,17 +212,21 @@ class Router extends Singleton implements RouterInterface
         return $this;
     }
 
-    protected function getDirRoutes()
+    public function getDirRoutes()
     {
         return $this->dirRoutes; 
     }
 
-    public function use(String $pattern, $fileRoute)
+    public function use(String $pattern, String $fileRoute)
     {
-        if ($this->getDirRoutes() === null) {
-            echo 'Diretorio de Rotas não informado';
-            exit;
+        // if ($this->getDirRoutes() === null) {
+        //     echo 'Diretorio de Rotas não informado';
+        //     exit;
+        // };
+        if(empty($fileRoute)) {
+            echo 'File Route não informado';
         };
+
 
         $useRoute = new \Fyyb\Router\RouterUse($pattern);
         $useRoute->load($fileRoute);
@@ -256,12 +250,6 @@ class Router extends Singleton implements RouterInterface
 
     }
 
-    public function getRoutes()
-    {   
-        $mid = MiddlewareHandler::getInstance();
-        return array($this->map, $mid->getMids());
-    }
-
     /**
      *  Settings Cors
      */
@@ -280,6 +268,21 @@ class Router extends Singleton implements RouterInterface
     public function setHeadersCors(String $value = 'true') 
     {
         $this->corsHeaders = $value;
+        return $this;
+    }
+
+    /**
+     * Set Response Error
+     */
+    public function setResponseErrorsWithJson()
+    {
+        $this->reportError = 'json';
+        return $this;
+    }
+
+    public function setResponseErrorsWithHtml()
+    {
+        $this->reportError = 'html';
         return $this;
     }
 }
