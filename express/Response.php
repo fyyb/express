@@ -36,6 +36,12 @@ class Response
         exit;
     }
 
+    public function redirect($url, $newHeader = true)
+    {
+        header('Location: '.$url, $newHeader);
+        exit;
+    }
+
     public function setHeader($header, $value)
     {
         if (!$this->hasHeader($header)) {

@@ -64,7 +64,15 @@ class MiddlewareHandler extends Singleton
                 }; 
             };
 
-            echo 'Erro ao tentar executar o Middleware: '.$middleware;
+            $request->error = [
+                'code' => 501, 
+                'title' => 'Method not implemented',
+                'details' => [
+                    'Method' => $middleware
+                ]
+            ];
+            Fyyb\Router::getInstance()->responseError();
+            // echo 'Erro ao tentar executar o Middleware: '.$middleware;
             exit;
         };
 
@@ -76,9 +84,9 @@ class MiddlewareHandler extends Singleton
     public static function executeMiddlewares(Array $middlewares, &$request, &$response)
     {
         foreach ($middlewares as $middleware) {
-            $response = self::call($middleware, $request, $response, 
+            $res = self::call($middleware, $request, $response, 
                 function($request, $response){ 
-                    return $response;
+                    return $res;
                 }
             );
         };

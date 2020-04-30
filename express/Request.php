@@ -79,7 +79,7 @@ class Request
         };
     }
 
-    public function hasHeader($header): Boolean
+    public function hasHeader($header) : Bool
     {
         foreach ($this->getHeaders() as $h => $value) {
             if ($h === $header) {

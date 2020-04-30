@@ -9,19 +9,8 @@ use Fyyb\Response;
 class JsonErrorRenderer
 {
 
-    public function __construct(Int $code, Array $details = [])
+    public function __construct(Int $code, String $title, Array $details = [])
     {
-        $title;
-        switch($code)
-        {
-            case '501':
-                $title = 'Not Implemented';
-                break;
-            case '404':
-                $title = 'Not Found';
-                break;
-        };
-
         $this->renderError($code, $title, $details);
     }
 

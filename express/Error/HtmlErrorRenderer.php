@@ -9,23 +9,12 @@ use Fyyb\Response;
 class HtmlErrorRenderer
 {
 
-    public function __construct(Int $code, Array $details = [])
+    public function __construct(Int $code, String $title, Array $details = [])
     {
-        $title;
-        switch($code)
-        {
-            case '501':
-                $title = 'Not Implemented';
-                break;
-            case '404':
-                $title = 'Not Found';
-                break;
-        };
-
-        $this->renderError($title, $details);
+        self::renderError($code, $title, $details);
     }
 
-    private static function renderError($title, $details = []): string
+    private static function renderError($code, $title, $details = []): string
     {
         $html = '<html>' .
                 '   <head>' .
@@ -61,6 +50,6 @@ class HtmlErrorRenderer
                 '</html>';
 
         $res = new Response();
-        $res->send($html);
+        $res->send($html, $code);
     }
 }

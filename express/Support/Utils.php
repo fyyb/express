@@ -10,12 +10,14 @@ class Utils
   {
       for ($i=0; $i < substr_count($uri, '/'); $i++) { 
           $uri = str_replace('//', '/', $uri);
-      };
-
-      if (substr($uri, -1) === '/') {
-          $uri = substr($uri,0,-1);
-      }
-
+        };
+        
+        if(strlen($uri) > 1) {
+            if (substr($uri, -1) === '/') {
+                $uri = substr($uri,0,-1);
+            }
+        }
+        
       return $uri;
   }
 }
