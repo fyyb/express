@@ -1,13 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Fyyb;
 
+use Fyyb\Http\HeaderHandler;
 use Fyyb\Http\HttpPopulateTrait;
 use Fyyb\Support\Utils;
 
-class Request
+class Request extends HeaderHandler
 {
     use HttpPopulateTrait;
 
@@ -24,18 +25,17 @@ class Request
 
     public function getURI(): String
     {
-        $uri;
         if (defined('ENVIRONMENT')) {
             if (ENVIRONMENT === 'dev') {
                 if (defined('BASE_DIR')) {
-                    $uri = '/'.str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
+                    $uri = '/' . str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
                 };
             };
         } else {
-            $uri = '/'.$_SERVER['REQUEST_URI'];            
+            $uri = '/' . $_SERVER['REQUEST_URI'];
         };
 
-        $uri = str_replace('?'.$_SERVER['QUERY_STRING'], '', $uri);
+        $uri = str_replace('?' . $_SERVER['QUERY_STRING'], '', $uri);
         return Utils::clearURI($uri);
     }
 
@@ -44,48 +44,24 @@ class Request
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function getParams(): Array
+    public function getParams(): array
     {
         return Utils::convertDataToArray($this->params);
     }
 
-    public function getParsedBody(): Array
+    public function getParsedBody(): array
     {
         $data = json_decode(file_get_contents('php://input'));
         return Utils::convertDataToArray(array_merge((array) $data, $_POST));
     }
 
-    public function getUploadedFiles(): Array
+    public function getUploadedFiles(): array
     {
         return $_FILES;
     }
 
-    public function getQueryString(): Array
+    public function getQueryString(): array
     {
         return $_GET;
-    }
-
-    public function getHeaders(): Array
-    {
-        return apache_request_headers();
-    }
-
-    public function getHeader($header): String
-    {
-        foreach ($this->getHeaders() as $h => $value) {
-            if ($h === $header) {
-                return $value;
-            };
-        };
-    }
-
-    public function hasHeader($header) : Bool
-    {
-        foreach ($this->getHeaders() as $h => $value) {
-            if ($h === $header) {
-                return true;
-            };
-        };
-        return false;
     }
 }
