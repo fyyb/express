@@ -4,19 +4,19 @@ namespace Fyyb\Http;
 
 class HeaderHandler
 {
-    protected static function setHeader($header, $value)
+    public static function setHeader($header, $value)
     {
         if (!self::hasHeader($header)) {
             header($header . ':' . $value);
         };
     }
 
-    protected static function getHeaders()
+    public static function getHeaders()
     {
         return apache_response_headers();
     }
 
-    protected static function getHeader($header)
+    public static function getHeader($header)
     {
         $headers = self::getHeaders();
         foreach ($headers as $h => $value) {
@@ -26,7 +26,7 @@ class HeaderHandler
         };
     }
 
-    protected static function hasHeader($header)
+    public static function hasHeader($header)
     {
         $headers = self::getHeaders();
         foreach ($headers as $h) {
@@ -37,7 +37,7 @@ class HeaderHandler
         return false;
     }
 
-    protected static function appendHeader($header, $value)
+    public static function appendHeader($header, $value)
     {
         if (self::hasHeader($header)) {
             $oldValue = self::getHeader($header);
@@ -47,7 +47,7 @@ class HeaderHandler
         }
     }
 
-    protected static function withoutHeader($header)
+    public static function withoutHeader($header)
     {
         if (self::hasHeader($header)) {
             header_remove($header);
