@@ -92,8 +92,6 @@ class Router extends Singleton implements RouterInterface
     public function group(String $pattern, $callback)
     {
         $this->last = [];
-        $this->isGroup = true;
-
         call_user_func($callback, new RouterGroup($pattern));
         return $this;
     }
@@ -103,7 +101,7 @@ class Router extends Singleton implements RouterInterface
         if ($this->middlewares === null) {
             $this->middlewares = MiddlewareHandler::getInstance(); 
         };
-
+        
         $this->middlewares->add($this->last, $mids);
         $this->last = [];
 
@@ -128,8 +126,8 @@ class Router extends Singleton implements RouterInterface
             $this->responseError();
         };
         
+        $this->last = [];
         new RouterUse($pattern, $f);
-        
     }
 
     public function run() :void
@@ -228,6 +226,7 @@ class Router extends Singleton implements RouterInterface
                 'Method' => $callable
             ]
         ];
+        
         $this->responseError();
     }
 
@@ -304,5 +303,15 @@ class Router extends Singleton implements RouterInterface
         } else if($this->reportError === 'json') {
             new JsonErrorRenderer($code, $title, $details);
         };
+    }
+
+    public function activateGroup()
+    {
+        $this->isGroup = true;
+    }
+
+    public function disableGroup()
+    {
+        $this->isGroup = false;
     }
 }

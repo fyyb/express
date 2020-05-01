@@ -67,8 +67,7 @@ class RouterUse implements RouterInterface
     
     public function add(...$mids)
     {
-        $this->router->add($mids);
-        return $this;
+        $this->router->add(...$mids);
     }
 
 }

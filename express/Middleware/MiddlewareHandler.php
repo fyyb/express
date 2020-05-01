@@ -84,9 +84,9 @@ class MiddlewareHandler extends Singleton
     public static function executeMiddlewares(Array $middlewares, &$request, &$response)
     {
         foreach ($middlewares as $middleware) {
-            $res = self::call($middleware, $request, $response, 
+            $response = self::call($middleware, $request, $response, 
                 function($request, $response){ 
-                    return $res;
+                    return $response;
                 }
             );
         };

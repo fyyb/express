@@ -27,6 +27,9 @@ class RouterGroup implements RouterInterface
         $this->isSubGroup = false;
         $this->router = Router::getInstance();
         $this->middlewares = MiddlewareHandler::getInstance();
+        
+        $this->router->activateGroup();
+
         return $this;
     }
     
@@ -96,6 +99,7 @@ class RouterGroup implements RouterInterface
 
     public function group(String $pattern, $callback, $sub=false)
     {
+        $this->last = [];
         $prefix = $this->group;
         if($sub) $this->group = '';
 
@@ -110,6 +114,11 @@ class RouterGroup implements RouterInterface
     {
         $this->middlewares->add($this->last, $mids);
         $this->last = [];                
+    }
+
+    public function __destruct()
+    {
+        $this->router->disableGroup();
     }
 
 }

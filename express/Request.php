@@ -46,13 +46,13 @@ class Request
 
     public function getParams(): Array
     {
-        return $this->params;
+        return Utils::convertDataToArray($this->params);
     }
 
     public function getParsedBody(): Array
     {
         $data = json_decode(file_get_contents('php://input'));
-        return array_merge((array) $data, $_POST);
+        return Utils::convertDataToArray(array_merge((array) $data, $_POST));
     }
 
     public function getUploadedFiles(): Array

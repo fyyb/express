@@ -5,7 +5,7 @@
   use App\Middlewares\TesteMiddleware as MidTeste;
   
   // Grupo sem Mid e SUBGRUPOS
-  $app->group('/groups', function($group) {
+  $this->group('/groups', function($group) {
       $group->any('/', Teste::class.":index");
 
       $group->any('/1mid', Teste::class.":index")
@@ -48,15 +48,15 @@
       })->add(MidTeste::class.":subgroup1", MidTeste::class.":subgroup2");
   });
 
-  $app->any('/groups/sub/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups/sub/nmid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
 
   // Grupo com 1 Mid e SUBGRUPOS
-  $app->group('/groups-1mid', function($group) {
+  $this->group('/groups-1mid', function($group) {
       $group->any('/', Teste::class.":index");
 
       $group->any('/1mid', Teste::class.":index")
@@ -99,15 +99,15 @@
       })->add(MidTeste::class.":subgroup1", MidTeste::class.":subgroup2");
   })->add(MidTeste::class.":group1");
 
-  $app->any('/groups-1mid/sub/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups-1mid/sub/nmid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups-1mid/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups-1mid/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups-1mid/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
-  $app->any('/groups-1mid/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
+  $this->any('/groups-1mid/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
 
     // Grupo com n Mid e SUBGRUPOS
-    $app->group('/groups-nmid', function($group) {
+    $this->group('/groups-nmid', function($group) {
         $group->any('/', Teste::class.":index");
   
         $group->any('/1mid', Teste::class.":index")
@@ -150,9 +150,9 @@
         })->add(MidTeste::class.":subgroup1", MidTeste::class.":subgroup2");
     })->add(MidTeste::class.":group1", MidTeste::class.":group2");
   
-    $app->any('/groups-nmid/sub/1mid/conflito', Teste::class.":conflitoRoute");
-    $app->any('/groups-nmid/sub/nmid/conflito', Teste::class.":conflitoRoute");
-    $app->any('/groups-nmid/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
-    $app->any('/groups-nmid/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
-    $app->any('/groups-nmid/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
-    $app->any('/groups-nmid/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub/1mid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub/nmid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub-1mid/1mid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub-1mid/nmid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub-nmid/1mid/conflito', Teste::class.":conflitoRoute");
+    $this->any('/groups-nmid/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");

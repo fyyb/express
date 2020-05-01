@@ -8,18 +8,18 @@
     use App\Middlewares\TesteMiddleware as MidTeste;
     
     // Rota Simples
-    $app->any('/', Teste::class.":index");
+    $this->any('/', Teste::class.":index");
     
     // Rota Simples + 1 Mid
-    $app->any('/1mid', Teste::class.":index")
+    $this->any('/1mid', Teste::class.":index")
         ->add(MidTeste::class.":route1");
 
     // Rota Simples + n Mid
-    $app->any('/nmid', Teste::class.":index")
+    $this->any('/nmid', Teste::class.":index")
         ->add(MidTeste::class.":route1", MidTeste::class.":route2");
 
     // Rota teste middlewares
-    $app->any('/teste', function(Request $req, Response $res) {
+    $this->any('/teste', function(Request $req, Response $res) {
         echo $req->teste;
         echo '<br>';
         echo $res->teste;
