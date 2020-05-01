@@ -11,6 +11,7 @@ class JWT
     private $claims;
     private $payload;
     private $signature;
+    private $token;
 
     public function __construct(String $jwt = '')
     {
@@ -22,6 +23,7 @@ class JWT
                 $this->claims = $this->jsonDecode($this->base64url_decode($t[1]));
                 $this->setPayload();
                 $this->signature = $t[2];
+                $this->token = $jwt;
             };
         } else {
             $this->headers = [
@@ -146,8 +148,8 @@ class JWT
         $this->setPayload();
         $this->signature = $this->sign();
 
-        $token = implode('.', $this->payload) . '.' . $this->signature;
-        return $token;
+        $this->token = implode('.', $this->payload) . '.' . $this->signature;
+        return $this;
     }
 
     private function setPayload()
@@ -234,8 +236,8 @@ class JWT
         );
     }
 
-    public function __toString()
+    public function getToken()
     {
-        echo $this->createToken();
+        return $this->token;
     }
 }

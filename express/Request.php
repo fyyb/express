@@ -4,11 +4,10 @@ declare (strict_types = 1);
 
 namespace Fyyb;
 
-use Fyyb\Http\HeaderHandler;
 use Fyyb\Http\HttpPopulateTrait;
 use Fyyb\Support\Utils;
 
-class Request extends HeaderHandler
+class Request
 {
     use HttpPopulateTrait;
 
@@ -63,5 +62,55 @@ class Request extends HeaderHandler
     public function getQueryString(): array
     {
         return $_GET;
+    }
+
+    public static function setHeader($header, $value)
+    {
+        if (!self::hasHeader($header)) {
+            header($header . ':' . $value);
+        };
+    }
+
+    public static function getHeaders()
+    {
+        return apache_request_headers();
+    }
+
+    public static function getHeader($header)
+    {
+        $headers = self::getHeaders();
+        foreach ($headers as $h => $value) {
+            if ($h === $header) {
+                return $value;
+            };
+        };
+    }
+
+    public static function hasHeader($header)
+    {
+        $headers = self::getHeaders();
+        foreach ($headers as $h) {
+            if ($h === $header) {
+                return true;
+            };
+        };
+        return false;
+    }
+
+    public static function appendHeader($header, $value)
+    {
+        if (self::hasHeader($header)) {
+            $oldValue = self::getHeader($header);
+            $newValue = $oldValue . ', ' . $value;
+            self::withoutHeader($header);
+            self::setHeader($header, $newValue);
+        }
+    }
+
+    public static function withoutHeader($header)
+    {
+        if (self::hasHeader($header)) {
+            header_remove($header);
+        };
     }
 }
