@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Fyyb\Middleware;
 
 use Fyyb\Support\Singleton;
+use Fyyb\Router;
 
 class MiddlewareHandler extends Singleton
 {
@@ -71,8 +72,8 @@ class MiddlewareHandler extends Singleton
                     'Method' => $middleware
                 ]
             ];
-            Fyyb\Router::getInstance()->responseError();
-            // echo 'Erro ao tentar executar o Middleware: '.$middleware;
+
+            Router::getInstance()->responseError();
             exit;
         };
 
