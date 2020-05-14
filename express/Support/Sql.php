@@ -1,30 +1,33 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Fyyb\Support;
 
-class Sql extends \PDO
+use \PDO;
+use \PDOException;
+
+class Sql extends PDO
 {
     protected $pdo;
 
     public function __construct($config)
     {
-        try{
-            $this->pdo = new \PDO(
-                $config['driver'].':host='. $config['host'] .';dbname=' . $config['database'],
-                $config['user'], $config['password'], 
+        try {
+            $this->pdo = new PDO(
+                $config['driver'] . ':host=' . $config['host'] . ';dbname=' . $config['database'],
+                $config['user'], $config['password'],
                 array(
-                    \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8", 
-                    \PDO::FETCH_ASSOC => true
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+                    PDO::FETCH_ASSOC => true,
                 )
             );
 
-            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
-            $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-        
-        } catch(\PDOException $e) {
-            die( print 'Erro ao acessar o Banco de Dados =(');
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            die(print 'Erro ao acessar o Banco de Dados =(');
         };
         return;
     }
@@ -32,7 +35,7 @@ class Sql extends \PDO
     private function setParams($sql, $parameters = array())
     {
         foreach ($parameters as $key => $value) {
-           $this->setParam($sql, $key, $value);
+            $this->setParam($sql, $key, $value);
         };
     }
 
@@ -58,7 +61,7 @@ class Sql extends \PDO
     public function selectAll($rowQuery, $params = array())
     {
         $sql = $this->query($rowQuery, $params);
-        return $sql->fetch();
+        return $sql->fetchAll();
     }
 
     public function lastId()

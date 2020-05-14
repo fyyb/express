@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Fyyb\Support;
 
 class Model
 {
-    private $data;
- 
+    protected $data = array();
+
     public function __call($name, $args)
     {
-        $method    = substr($name, 0, 3);
-        $fieldName = substr($name, 3, strlen($name));
+        $method = substr($name, 0, 3);
+        $fieldName = strtolower(substr($name, 3, strlen($name)));
 
         switch ($method) {
             case 'get':
@@ -27,7 +27,7 @@ class Model
     public function setData($data = array())
     {
         foreach ($data as $key => $value) {
-            $this->{'set'.$key} ($value);
+            $this->{'set' . ucfirst($key)}($value);
         }
     }
 
