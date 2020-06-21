@@ -1,0 +1,2396 @@
+{
+    "baseURL": "http://localhost/fyyb/example/",
+    "groups": [
+        {
+            "name": "Simples",
+            "routes": [
+                {
+                    "label": "Simples Route without Middleware",
+                    "uri": "/",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/"
+                    }
+                },
+                {
+                    "label": "Simples Route with 1 Middleware",
+                    "uri": "/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Simples Route with n Middlewares",
+                    "uri": "/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /nmid",
+                            "Mid 2 - Route: /nmid"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Group",
+            "routes": [
+                {
+                    "label": "Group without Middleware, Route without Middleware",
+                    "uri": "/group/",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Route with 1 Middleware",
+                    "uri": "/group/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /group/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/group/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Route with n Middlewares",
+                    "uri": "/group/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /group/nmid",
+                            "Mid 2 - Route: /group/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/group/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Route without Middleware",
+                    "uri": "/group-1mid/",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-1mid",
+                        "mids": [
+                            "Mid 1 - Group: /group-1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/group-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /group-1mid/1mid",
+                            "Mid 1 - Route: /group-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/group-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Route with n Middlewares",
+                    "uri": "/group-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /group-1mid/nmid",
+                            "Mid 1 - Route: /group-1mid/nmid",
+                            "Mid 2 - Route: /group-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/group-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Route without Middleware",
+                    "uri": "/group-nmid/",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-nmid",
+                        "mids": [
+                            "Mid 1 - Group: /group-nmid",
+                            "Mid 2 - Group: /group-nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Route with 1 Middleware",
+                    "uri": "/group-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /group-nmid/1mid",
+                            "Mid 2 - Group: /group-nmid/1mid",
+                            "Mid 1 - Route: /group-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/group-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Route with n Middlewares",
+                    "uri": "/group-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /group-nmid/nmid",
+                            "Mid 2 - Group: /group-nmid/nmid",
+                            "Mid 1 - Route: /group-nmid/nmid",
+                            "Mid 2 - Route: /group-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/group-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/group-nmid/nmid/conflito"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Groups",
+            "routes": [
+                {
+                    "label": "Group without Middleware, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/groups/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub/semmid"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/groups/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /groups/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/groups/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /groups/sub/nmid",
+                            "Mid 2 - Route: /groups/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/groups/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/groups/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-1mid/1mid",
+                            "Mid 1 - Route: /groups/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/groups/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-1mid/nmid",
+                            "Mid 1 - Route: /groups/sub-1mid/nmid",
+                            "Mid 2 - Route: /groups/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/groups/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /groups/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/groups/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /groups/sub-nmid/1mid",
+                            "Mid 1 - Route: /groups/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/groups/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/groups/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /groups/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /groups/sub-nmid/nmid",
+                            "Mid 1 - Route: /groups/sub-nmid/nmid",
+                            "Mid 2 - Route: /groups/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group without Middleware, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/groups/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups/sub-nmid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/groups-1mid/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/groups-1mid/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub/1mid",
+                            "Mid 1 - Route: /groups-1mid/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-1mid/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/groups-1mid/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub/nmid",
+                            "Mid 1 - Route: /groups-1mid/sub/nmid",
+                            "Mid 2 - Route: /groups-1mid/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups-1mid/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/groups-1mid/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-1mid/semmid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/groups-1mid/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-1mid/1mid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-1mid/1mid",
+                            "Mid 1 - Route: /groups-1mid/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-1mid/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/groups-1mid/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-1mid/nmid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-1mid/nmid",
+                            "Mid 1 - Route: /groups-1mid/sub-1mid/nmid",
+                            "Mid 2 - Route: /groups-1mid/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups-1mid/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/groups-1mid/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-nmid/semmid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /groups-1mid/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/groups-1mid/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-nmid/1mid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /groups-1mid/sub-nmid/1mid",
+                            "Mid 1 - Route: /groups-1mid/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-1mid/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/groups-1mid/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-1mid/sub-nmid/nmid",
+                            "Mid 1 - Subgroup: /groups-1mid/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /groups-1mid/sub-nmid/nmid",
+                            "Mid 1 - Route: /groups-1mid/sub-nmid/nmid",
+                            "Mid 2 - Route: /groups-1mid/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with 1 Middleware, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/groups-1mid/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-1mid/sub-nmid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/groups-nmid/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub/semmid",
+                            "Mid 2 - Group: /groups-nmid/sub/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/groups-nmid/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub/1mid",
+                            "Mid 2 - Group: /groups-nmid/sub/1mid",
+                            "Mid 1 - Route: /groups-nmid/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-nmid/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/groups-nmid/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub/nmid",
+                            "Mid 2 - Group: /groups-nmid/sub/nmid",
+                            "Mid 1 - Route: /groups-nmid/sub/nmid",
+                            "Mid 2 - Route: /groups-nmid/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups-nmid/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/groups-nmid/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-1mid/semmid",
+                            "Mid 2 - Group: /groups-nmid/sub-1mid/semmid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/groups-nmid/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-1mid/1mid",
+                            "Mid 2 - Group: /groups-nmid/sub-1mid/1mid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-1mid/1mid",
+                            "Mid 1 - Route: /groups-nmid/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-nmid/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/groups-nmid/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-1mid/nmid",
+                            "Mid 2 - Group: /groups-nmid/sub-1mid/nmid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-1mid/nmid",
+                            "Mid 1 - Route: /groups-nmid/sub-1mid/nmid",
+                            "Mid 2 - Route: /groups-nmid/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/groups-nmid/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/groups-nmid/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-nmid/semmid",
+                            "Mid 2 - Group: /groups-nmid/sub-nmid/semmid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /groups-nmid/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/groups-nmid/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-nmid/1mid",
+                            "Mid 2 - Group: /groups-nmid/sub-nmid/1mid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /groups-nmid/sub-nmid/1mid",
+                            "Mid 1 - Route: /groups-nmid/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/groups-nmid/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/groups-nmid/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Group: /groups-nmid/sub-nmid/nmid",
+                            "Mid 1 - Subgroup: /groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /groups-nmid/sub-nmid/nmid",
+                            "Mid 1 - Route: /groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Route: /groups-nmid/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Group with n Middlewares, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/groups-nmid/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/groups-nmid/sub-nmid/nmid/conflito"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Use Route - Simples",
+            "routes": [
+                {
+                    "label": "Use Route, Simples Route without Middleware",
+                    "uri": "/use",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use"
+                    }
+                },
+                {
+                    "label": "Use Route, Simples Route with 1 Middleware",
+                    "uri": "/use/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /use/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Simples Route with n Middlewares",
+                    "uri": "/use/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /use/nmid",
+                            "Mid 2 - Route: /use/nmid"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Use Route - Group",
+            "routes": [
+                {
+                    "label": "Use Route, Group without Middleware, Route without Middleware",
+                    "uri": "/use/group",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with 1 Middleware",
+                    "uri": "/use/group/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /use/group/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with n Middlewares",
+                    "uri": "/use/group/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /use/group/nmid",
+                            "Mid 2 - Route: /use/group/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/group/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route without Middleware",
+                    "uri": "/use/group-1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/use/group-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid/1mid",
+                            "Mid 1 - Route: /use/group-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with n Middlewares",
+                    "uri": "/use/group-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid/nmid",
+                            "Mid 1 - Route: /use/group-1mid/nmid",
+                            "Mid 2 - Route: /use/group-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/group-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route without Middleware",
+                    "uri": "/use/group-nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid",
+                            "Mid 2 - Group: /use/group-nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with 1 Middleware",
+                    "uri": "/use/group-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid/1mid",
+                            "Mid 2 - Group: /use/group-nmid/1mid",
+                            "Mid 1 - Route: /use/group-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with n Middlewares",
+                    "uri": "/use/group-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid/nmid",
+                            "Mid 2 - Group: /use/group-nmid/nmid",
+                            "Mid 1 - Route: /use/group-nmid/nmid",
+                            "Mid 2 - Route: /use/group-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/use/group-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/nmid/conflito"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Use Route - Group",
+            "routes": [
+                {
+                    "label": "Use Route, Group without Middleware, Route without Middleware",
+                    "uri": "/use/group",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with 1 Middleware",
+                    "uri": "/use/group/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /use/group/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with n Middlewares",
+                    "uri": "/use/group/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /use/group/nmid",
+                            "Mid 2 - Route: /use/group/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/group/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route without Middleware",
+                    "uri": "/use/group-1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/use/group-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid/1mid",
+                            "Mid 1 - Route: /use/group-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with n Middlewares",
+                    "uri": "/use/group-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-1mid/nmid",
+                            "Mid 1 - Route: /use/group-1mid/nmid",
+                            "Mid 2 - Route: /use/group-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/group-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route without Middleware",
+                    "uri": "/use/group-nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid",
+                            "Mid 2 - Group: /use/group-nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with 1 Middleware",
+                    "uri": "/use/group-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid/1mid",
+                            "Mid 2 - Group: /use/group-nmid/1mid",
+                            "Mid 1 - Route: /use/group-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/use/group-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with n Middlewares",
+                    "uri": "/use/group-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/group-nmid/nmid",
+                            "Mid 2 - Group: /use/group-nmid/nmid",
+                            "Mid 1 - Route: /use/group-nmid/nmid",
+                            "Mid 2 - Route: /use/group-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/use/group-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/group-nmid/nmid/conflito"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Use Route - Groups",
+            "routes": [
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/use/groups/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub/semmid"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Route: /use/groups/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/use/groups/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Route: /use/groups/sub/nmid",
+                            "Mid 2 - Route: /use/groups/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/use/groups/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-1mid/1mid",
+                            "Mid 1 - Route: /use/groups/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/use/groups/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-1mid/nmid",
+                            "Mid 1 - Route: /use/groups/sub-1mid/nmid",
+                            "Mid 2 - Route: /use/groups/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/use/groups/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /use/groups/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/use/groups/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /use/groups/sub-nmid/1mid",
+                            "Mid 1 - Route: /use/groups/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/use/groups/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Subgroup: /use/groups/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /use/groups/sub-nmid/nmid",
+                            "Mid 1 - Route: /use/groups/sub-nmid/nmid",
+                            "Mid 2 - Route: /use/groups/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group without Middleware, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups/sub-nmid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/use/groups-1mid/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups-1mid/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub/1mid",
+                            "Mid 1 - Route: /use/groups-1mid/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-1mid/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/use/groups-1mid/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub/nmid",
+                            "Mid 1 - Route: /use/groups-1mid/sub/nmid",
+                            "Mid 2 - Route: /use/groups-1mid/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-1mid/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/use/groups-1mid/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-1mid/semmid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups-1mid/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-1mid/1mid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-1mid/1mid",
+                            "Mid 1 - Route: /use/groups-1mid/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-1mid/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/use/groups-1mid/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-1mid/nmid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-1mid/nmid",
+                            "Mid 1 - Route: /use/groups-1mid/sub-1mid/nmid",
+                            "Mid 2 - Route: /use/groups-1mid/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-1mid/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/use/groups-1mid/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-nmid/semmid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /use/groups-1mid/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/use/groups-1mid/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-nmid/1mid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /use/groups-1mid/sub-nmid/1mid",
+                            "Mid 1 - Route: /use/groups-1mid/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-1mid/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/use/groups-1mid/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-1mid/sub-nmid/nmid",
+                            "Mid 1 - Subgroup: /use/groups-1mid/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /use/groups-1mid/sub-nmid/nmid",
+                            "Mid 1 - Route: /use/groups-1mid/sub-nmid/nmid",
+                            "Mid 2 - Route: /use/groups-1mid/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with 1 Middleware, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-1mid/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-1mid/sub-nmid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup without Middleware, Route without Middleware",
+                    "uri": "/use/groups-nmid/sub/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub/semmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup without Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups-nmid/sub/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub/1mid",
+                            "Mid 2 - Group: /use/groups-nmid/sub/1mid",
+                            "Mid 1 - Route: /use/groups-nmid/sub/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup without Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-nmid/sub/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup without Middleware, Route with n Middlewares",
+                    "uri": "/use/groups-nmid/sub/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub/nmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub/nmid",
+                            "Mid 1 - Route: /use/groups-nmid/sub/nmid",
+                            "Mid 2 - Route: /use/groups-nmid/sub/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup without Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-nmid/sub/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with 1 Middleware, Route without Middleware",
+                    "uri": "/use/groups-nmid/sub-1mid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-1mid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-1mid/semmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-1mid/semmid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-1mid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with 1 Middleware, Route with 1 Middleware",
+                    "uri": "/use/groups-nmid/sub-1mid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-1mid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-1mid/1mid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-1mid/1mid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-1mid/1mid",
+                            "Mid 1 - Route: /use/groups-nmid/sub-1mid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with 1 Middleware, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-nmid/sub-1mid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-1mid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with 1 Middleware, Route with n Middlewares",
+                    "uri": "/use/groups-nmid/sub-1mid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-1mid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-1mid/nmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-1mid/nmid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-1mid/nmid",
+                            "Mid 1 - Route: /use/groups-nmid/sub-1mid/nmid",
+                            "Mid 2 - Route: /use/groups-nmid/sub-1mid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with 1 Middleware, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-nmid/sub-1mid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-1mid/nmid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with n Middlewares, Route without Middleware",
+                    "uri": "/use/groups-nmid/sub-nmid/semmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-nmid/semmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-nmid/semmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-nmid/semmid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-nmid/semmid",
+                            "Mid 2 - Subgroup: /use/groups-nmid/sub-nmid/semmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with n Middlewares, Route with 1 Middleware",
+                    "uri": "/use/groups-nmid/sub-nmid/1mid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-nmid/1mid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-nmid/1mid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-nmid/1mid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-nmid/1mid",
+                            "Mid 2 - Subgroup: /use/groups-nmid/sub-nmid/1mid",
+                            "Mid 1 - Route: /use/groups-nmid/sub-nmid/1mid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with n Middlewares, Route with 1 Middleware (conflict)",
+                    "uri": "/use/groups-nmid/sub-nmid/1mid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-nmid/1mid/conflito"
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with n Middlewares, Route with n Middlewares",
+                    "uri": "/use/groups-nmid/sub-nmid/nmid",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-nmid/nmid",
+                        "mids": [
+                            "Mid 1 - Group: /use/groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Group: /use/groups-nmid/sub-nmid/nmid",
+                            "Mid 1 - Subgroup: /use/groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Subgroup: /use/groups-nmid/sub-nmid/nmid",
+                            "Mid 1 - Route: /use/groups-nmid/sub-nmid/nmid",
+                            "Mid 2 - Route: /use/groups-nmid/sub-nmid/nmid"
+                        ]
+                    }
+                },
+                {
+                    "label": "Use Route, Group with n Middlewares, Subgroup with n Middlewares, Route with n Middlewares (conflict)",
+                    "uri": "/use/groups-nmid/sub-nmid/nmid/conflito",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "route": "/use/groups-nmid/sub-nmid/nmid/conflito"
+                    }
+                }
+            ]
+        }
+    ]
+}

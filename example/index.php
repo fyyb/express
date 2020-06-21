@@ -9,8 +9,8 @@ use Fyyb\Router;
 
 $app = Router::getInstance();
 
-// require __DIR__ ."./TesteRouterGroups.php";
-// require __DIR__ ."./TesteRouterGroup.php";
+require __DIR__ . "./TesteRouterGroups.php";
+require __DIR__ . "./TesteRouterGroup.php";
 require __DIR__ . "./TesteRouterSimples.php";
 
 $app->use('/use', './App/Routes/TesteRouterGroups.php');

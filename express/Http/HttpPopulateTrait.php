@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Fyyb\Http;
 
@@ -10,9 +10,13 @@ trait HttpPopulateTrait
 
     public function __get($key)
     {
-        return $this->data[$key];
+        if (isset($this->data[$key])) {
+            return $this->data[$key];
+        }
+
+        return null;
     }
-    
+
     public function __set($key, $value)
     {
         $this->data[$key] = $value;
