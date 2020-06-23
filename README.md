@@ -12,12 +12,12 @@ Assuming you already have composer knowledge, create a directory to store your a
 $ composer require fyyb/express
 ```
 
-This will include in composer autoload all the necessary dependencies.  
+This will include in composer autoload all the necessary dependencies.
 Requires PHP 7.0 or later!
 
 ### Usage example
 
-After installing, create the .htacces, settings.php and index.php files at the root of your project.
+After installing, create the .htacces, config.php and index.php files at the root of your project.
 
 To keep your code separate from the configuration files, we suggest that you use a folder/file structure similar to the one below:
 
@@ -28,7 +28,7 @@ To keep your code separate from the configuration files, we suggest that you use
    ├─ vendor/
    │    └── ...
    ├─ .htaccess
-   ├─ settings.php
+   ├─ config.php
    ├─ index.php
    └─ composer.json
 ```
@@ -55,24 +55,15 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA]
 ```
 
-### settings.php
+### config.php
 
-File where the variables/constants of the project will be defined.  
-Easily switch between production and development environments using the constant ENVIRONMENT. If you are in a development environment, set the BASE_DIR constant for the correct operation in identifying the routes.
+File where the variables/constants of the project will be defined.
+If your project directory is different from the root, configure the BASE_DIR constant for the correct operation in identifying the routes.
 
 ```php
 <?php
 
-    /************************************
-     * Environment settings
-     ***********************************/
-
-    // Development Environment
-    const ENVIRONMENT = 'dev';
-    const BASE_DIR = '/path/to/project/';
-
-    // Production Environment
-    // const ENVIRONMENT = 'prod';
+    const BASE_DIR = '/ path / to / project /';
 
 ```
 
@@ -83,7 +74,7 @@ See how easy it is, in your index.php, insert the code below:
 ```php
 <?php
 
-    require __DIR__ . "./settings.php";
+    require __DIR__ . "./config.php";
     require __DIR__ . "./vendor/autoload.php";
 
     use Fyyb\Router;
@@ -120,7 +111,7 @@ Where:
 - PATH is a path on the server.
 - HANDLER is the function executed when the route is matched.
 
-The following examples illustrate defining simple routes.  
+The following examples illustrate defining simple routes.
 Respond with Hello World! on the homepage:
 
 ```php
