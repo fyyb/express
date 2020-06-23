@@ -1,13 +1,26 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Fyyb\Http;
 
 trait HttpPopulateTrait
 {
+    /**
+     * Data
+     * data storage
+     *
+     * @var array
+     */
     protected $data = array();
 
+    /**
+     * __GET
+     * set values ​​in data storage
+     *
+     * @param mixed $key
+     * @return void
+     */
     public function __get($key)
     {
         if (isset($this->data[$key])) {
@@ -17,9 +30,15 @@ trait HttpPopulateTrait
         return null;
     }
 
-    public function __set($key, $value)
+    /**
+     * __SET
+     * set values ​​in data storage
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function __set(string $key, $value)
     {
         $this->data[$key] = $value;
-
     }
 }

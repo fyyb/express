@@ -1,12 +1,11 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Fyyb\Support;
 
 class JWT
 {
-
     private $headers;
     private $claims;
     private $payload;
@@ -15,7 +14,6 @@ class JWT
 
     public function __construct(String $jwt = '')
     {
-
         if ($jwt !== '') {
             $t = explode('.', $jwt);
             if (count($t) === 3) {
@@ -45,13 +43,11 @@ class JWT
 
     public function getHeaders()
     {
-
         return $this->headers;
     }
 
     public function hasHeader($name)
     {
-
         return array_key_exists($name, $this->headers);
     }
 
@@ -119,7 +115,9 @@ class JWT
     private function setRegisteredClaim($name, $value, $replicate = false)
     {
         $this->claims[(string) $name] = $value;
-        if ($replicate) {$this->headers[$name] = $this->claims[$name];};
+        if ($replicate) {
+            $this->headers[$name] = $this->claims[$name];
+        };
         return $this;
     }
 
@@ -134,7 +132,6 @@ class JWT
         };
 
         if (!isset($this->claims['exp']) || empty($this->claims['exp'])) {
-
             if (defined("JWT")) {
                 if (!empty(JWT['exp'])) {
                     $exp = JWT['exp'];
@@ -166,7 +163,8 @@ class JWT
         if (defined("JWT")) {
             if (!empty(JWT['key'])) {
                 $s = $this->base64url_encode(
-                    hash_hmac('sha256',
+                    hash_hmac(
+                        'sha256',
                         implode('.', $this->payload),
                         JWT['key'],
                         true

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Fyyb\Error;
 
@@ -8,22 +8,31 @@ use Fyyb\Response;
 
 class JsonErrorRenderer
 {
-
-    public function __construct(Int $code, String $title, Array $details = [])
+    /**
+     * @param Int $code
+     * @param String $title
+     * @param Array $details
+     */
+    public function __construct(Int $code, String $title, array $details = [])
     {
-        $this->renderError($code, $title, $details);
+        self::renderError($code, $title, $details);
     }
 
-    private static function renderError($code, $title, $details = []): string
+    /**
+     * @param Int $code
+     * @param String $title
+     * @param Array $details
+     * @return void
+     */
+    private static function renderError(Int $code, String $title, array $details): void
     {
-      
-      if(count($details) > 0) {
-        $data = array('error' => $title, 'details' => $details);
-      } else {
-        $data = array('error' => $title);
-      };
-      
-      $res = new Response();
-      $res->json($data, $code);
+        if (count($details) > 0) {
+            $data = array('error' => $title, 'details' => $details);
+        } else {
+            $data = array('error' => $title);
+        };
+
+        $res = new Response();
+        $res->json($data, $code);
     }
 }

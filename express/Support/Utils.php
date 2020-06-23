@@ -6,32 +6,32 @@ namespace Fyyb\Support;
 
 class Utils
 {
-  public static function clearURI(String $uri) :String
-  {
-      for ($i=0; $i < substr_count($uri, '/'); $i++) { 
-          $uri = str_replace('//', '/', $uri);
+    public static function clearURI(String $uri) :String
+    {
+        for ($i=0; $i < substr_count($uri, '/'); $i++) {
+            $uri = str_replace('//', '/', $uri);
         };
         
-        if(strlen($uri) > 1) {
+        if (strlen($uri) > 1) {
             if (substr($uri, -1) === '/') {
-                $uri = substr($uri,0,-1);
+                $uri = substr($uri, 0, -1);
             }
         }
         
-      return $uri;
-  }
+        return $uri;
+    }
 
-  public static function convertDataToArray($data = []) :Array
-  {
-      $formatedData = [];
-      foreach ($data as $key => $value) {
-          if(gettype($value) === 'object') {
-              $formatedData[$key] = self::convertDataToArray($value);
-          } else {
-              $formatedData[$key] = $value;
-          }
-      }
+    public static function convertDataToArray($data = []) :array
+    {
+        $formatedData = [];
+        foreach ($data as $key => $value) {
+            if (gettype($value) === 'object') {
+                $formatedData[$key] = self::convertDataToArray($value);
+            } else {
+                $formatedData[$key] = $value;
+            }
+        }
   
-      return $formatedData;
-  }
+        return $formatedData;
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Fyyb\Support;
 
@@ -27,7 +27,6 @@ class DataValidation
         };
 
         return (count($this->data->error) === 0);
-
     }
 
     public function getError()
@@ -39,5 +38,4 @@ class DataValidation
     {
         return (count($this->data->error) !== 0) ? 'required fields (' . implode(', ', $this->data->error) . ') not sent' : '';
     }
-
 }

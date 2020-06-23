@@ -3,11 +3,13 @@
 require __DIR__ . "./settings.php";
 require __DIR__ . "./vendor/autoload.php";
 
+use Fyyb\Cors;
 use Fyyb\Request;
 use Fyyb\Response;
 use Fyyb\Router;
 
 $app = Router::getInstance();
+$app->setErrorResponseType('json');
 
 require __DIR__ . "./TesteRouterGroups.php";
 require __DIR__ . "./TesteRouterGroup.php";
@@ -54,5 +56,10 @@ $app->any('/params/file', function (Request $req, Response $res) {
     print_r($req->getUploadedFiles());
     exit;
 });
+
+$cors = Cors::getInstance();
+$cors->setOriginCors();
+$cors->setHeadersCors();
+$cors->setMethodsCors();
 
 $app->run();

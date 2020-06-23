@@ -3,9 +3,9 @@
   use App\Controllers\TesteController as Teste;
   // Load Middlewares
   use App\Middlewares\TesteMiddleware as MidTeste;
-  
+
   // Grupo sem Mid e SUBGRUPOS
-  $this->group('/groups', function($group) {
+  $this->group('/groups', function ($group) {
       $group->any('/', Teste::class.":index");
 
       $group->any('/1mid', Teste::class.":index")
@@ -15,7 +15,7 @@
           ->add(MidTeste::class.":route1", MidTeste::class.":route2");
       
       // Subgrupo sem mid
-      $group->group('/sub', function($sub1) {
+      $group->group('/sub', function ($sub1) {
           $sub1->any('/semmid', Teste::class.":index");
 
           $sub1->any('/1mid', Teste::class.":index")
@@ -26,7 +26,7 @@
       });
 
       // Subgrupo com 1 mid
-      $group->group('/sub-1mid', function($sub2) {
+      $group->group('/sub-1mid', function ($sub2) {
           $sub2->any('/semmid', Teste::class.":index");
 
           $sub2->any('/1mid', Teste::class.":index")
@@ -37,7 +37,7 @@
       })->add(MidTeste::class.":subgroup1");
 
       // Subgrupo com n mid
-      $group->group('/sub-nmid', function($sub3) {
+      $group->group('/sub-nmid', function ($sub3) {
           $sub3->any('/semmid', Teste::class.":index");
 
           $sub3->any('/1mid', Teste::class.":index")
@@ -56,7 +56,7 @@
   $this->any('/groups/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
 
   // Grupo com 1 Mid e SUBGRUPOS
-  $this->group('/groups-1mid', function($group) {
+  $this->group('/groups-1mid', function ($group) {
       $group->any('/', Teste::class.":index");
 
       $group->any('/1mid', Teste::class.":index")
@@ -66,7 +66,7 @@
           ->add(MidTeste::class.":route1", MidTeste::class.":route2");
       
       // Subgrupo sem mid
-      $group->group('/sub', function($sub1) {
+      $group->group('/sub', function ($sub1) {
           $sub1->any('/semmid', Teste::class.":index");
 
           $sub1->any('/1mid', Teste::class.":index")
@@ -77,7 +77,7 @@
       });
 
       // Subgrupo com 1 mid
-      $group->group('/sub-1mid', function($sub2) {
+      $group->group('/sub-1mid', function ($sub2) {
           $sub2->any('/semmid', Teste::class.":index");
 
           $sub2->any('/1mid', Teste::class.":index")
@@ -88,7 +88,7 @@
       })->add(MidTeste::class.":subgroup1");
 
       // Subgrupo com n mid
-      $group->group('/sub-nmid', function($sub2) {
+      $group->group('/sub-nmid', function ($sub2) {
           $sub2->any('/semmid', Teste::class.":index");
 
           $sub2->any('/1mid', Teste::class.":index")
@@ -107,7 +107,7 @@
   $this->any('/groups-1mid/sub-nmid/nmid/conflito', Teste::class.":conflitoRoute");
 
     // Grupo com n Mid e SUBGRUPOS
-    $this->group('/groups-nmid', function($group) {
+    $this->group('/groups-nmid', function ($group) {
         $group->any('/', Teste::class.":index");
   
         $group->any('/1mid', Teste::class.":index")
@@ -117,7 +117,7 @@
             ->add(MidTeste::class.":route1", MidTeste::class.":route2");
         
         // Subgrupo sem mid
-        $group->group('/sub', function($sub1) {
+        $group->group('/sub', function ($sub1) {
             $sub1->any('/semmid', Teste::class.":index");
   
             $sub1->any('/1mid', Teste::class.":index")
@@ -128,7 +128,7 @@
         });
   
         // Subgrupo com 1 mid
-        $group->group('/sub-1mid', function($sub2) {
+        $group->group('/sub-1mid', function ($sub2) {
             $sub2->any('/semmid', Teste::class.":index");
   
             $sub2->any('/1mid', Teste::class.":index")
@@ -139,7 +139,7 @@
         })->add(MidTeste::class.":subgroup1");
   
         // Subgrupo com n mid
-        $group->group('/sub-nmid', function($sub2) {
+        $group->group('/sub-nmid', function ($sub2) {
             $sub2->any('/semmid', Teste::class.":index");
   
             $sub2->any('/1mid', Teste::class.":index")

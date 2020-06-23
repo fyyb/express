@@ -1,0 +1,45 @@
+{
+    "baseURL": "http://localhost/fyyb/example/",
+    "groups": [
+        {
+            "name": "Simples",
+            "routes": [
+                {
+                    "label": "Simples Route with Where [0-9]+",
+                    "uri": "/where/1",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "data": {
+                            "id": 1
+                        },
+                        "route": "/where/1"
+                    }
+                },
+                {
+                    "label": "Simples Route with Where [a-zA-Z]+",
+                    "uri": "/where/abc",
+                    "methods": [
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                    ],
+                    "expected": {
+                        "data": {
+                            "texto": "abc"
+                        },
+                        "route": "/where/abc"
+                    }
+                }
+
+            ]
+        }
+    ]
+}

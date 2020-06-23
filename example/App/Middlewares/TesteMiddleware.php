@@ -7,7 +7,6 @@ use Fyyb\Response;
 
 class TesteMiddleware
 {
-
     public function route1(Request $req, Response $res, $next)
     {
         $route = str_replace('//', '/', '/' . $req->getURI());
@@ -50,7 +49,8 @@ class TesteMiddleware
         $mids = $req->mids ?? [];
         $mids[] = 'Mid 1 - Subgroup: ' . $route;
         $req->mids = $mids;
-        return $next($req, $res);}
+        return $next($req, $res);
+    }
 
     public function subgroup2(Request $req, Response $res, $next)
     {

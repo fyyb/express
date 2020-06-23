@@ -24,5 +24,12 @@
     "psr-4": {
       "Fyyb\\": "./express/"
     }
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.16"
+  },
+  "scripts": {
+    "check-style": "php-cs-fixer fix --diff --verbose --dry-run .",
+    "fix-style": "php-cs-fixer fix ."
   }
 }

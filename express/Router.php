@@ -1,323 +1,322 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Fyyb;
 
-use Fyyb\Error\HtmlErrorRenderer;
-use Fyyb\Error\JsonErrorRenderer;
-use Fyyb\Interfaces\RouterInterface;
+use Fyyb\Error\Error;
 use Fyyb\Middleware\MiddlewareHandler;
-use Fyyb\Request;
-use Fyyb\Response;
+use Fyyb\Router\Dispatcher;
+use Fyyb\Router\LastRouter;
+use Fyyb\Router\RouterCollection;
+use Fyyb\Router\RouterDefault;
 use Fyyb\Router\RouterGroup;
 use Fyyb\Router\RouterUse;
-use Fyyb\Support\Singleton;
-use Fyyb\Support\Utils;
 
-class Router extends Singleton implements RouterInterface
+class Router extends RouterDefault
 {
-    private $request;
-    private $response;
-    private $map = array();
-    private $last = array();
-    private $isGroup = false;
+    /**
+     * instance of RouterCollection
+     *
+     * @var RouterCollection
+     */
+    private $routerCollection;
+
+    /**
+     * instance of RouterLast
+     *
+     * @var RouterLast
+     */
+    private $last;
+
+    /**
+     * instance of Middlewares
+     *
+     * @var Middlewares
+     */
     private $middlewares;
 
-    private $corsOrigin = '*';
-    private $corsMethods = '*';
-    private $corsHeaders = 'true';
-    private $reportError = 'html';
-    private $hasError;
+    /**
+     * instance of Error
+     *
+     * @var Error
+     */
+    private $error;
 
+    /**
+     * instance of Dispatcher
+     *
+     * @var Dispatcher
+     */
+    private $dispatcher;
+
+    /**
+     * Is Group
+     *
+     * @var boolean
+     */
+    private $isGroup = false;
+
+    /**
+     * Returns a single instance of the class.
+     *
+     * @return Router
+     */
+    public static function getInstance(): Router
+    {
+        static $instance = null;
+        if ($instance === null) {
+            $instance = new Router();
+        }
+        return $instance;
+    }
+
+    /**
+     * Protected constructor method prevents a new instance of the
+     * Class from being created using the `new` operator from outside that class.
+     */
+    protected function __construct()
+    {
+    }
+
+    /**
+     * Private clone method prevents cloning of this class instance
+     */
+    private function __clone()
+    {
+    }
+
+    /**
+     * Private wakeup method prevent deserialization of the instance of this class.
+     */
+    private function __wakeup()
+    {
+    }
+
+    /**
+     * Map
+     * define accessible route for methods passed by parameter
+     *
+     * @param array $methods
+     * @param String $pattern
+     * @param callable|string $callable
+     * @return void
+     */
     public function map(array $methods, String $pattern, $callable)
     {
+        $this->getInstances();
+
+        // Check that the route group is active
         if (!$this->isGroup) {
-            $this->last = [];
+            $this->last->cleanLast();
         }
 
-        if (is_array($methods)) {
-            foreach ($methods as $method) {
-                $method = strtoupper($method);
-                if (!array_key_exists($method, $this->map)) {
-                    $this->map[$method] = [];
-                }
-
-                if (!array_key_exists($method, $this->last)) {
-                    $this->last[$method] = [];
-                }
-
-                $base = '';
-                $routes = [];
-
-                foreach (explode('[', str_replace(']', '', $pattern)) as $route) {
-                    $r = $base . $route;
-                    $base = $r;
-                    $routes[] = Utils::clearURI($r);
-                };
-
-                foreach (array_reverse($routes) as $r) {
-                    array_push($this->last[$method], $r);
-                    $this->map[$method][$r] = $callable;
-                };
-            };
-        };
+        // Set Routes in Collection
+        $this->routerCollection->setRoutesInCollection($methods, $pattern, $callable);
+        // Set Last Routes
+        $this->last->setLast($methods, $pattern);
 
         return $this;
     }
 
-    public function get(String $pattern, $callable): Router
+    /**
+     * Group
+     * Start RouterGroup
+     *
+     * @param String $pattern
+     * @param callable $callback
+     * @return void
+     */
+    public function group(String $pattern, callable $callback)
     {
-        $this->map(['GET'], $pattern, $callable);
-        return $this;
-    }
+        $this->getInstances();
 
-    public function post(String $pattern, $callable): Router
-    {
-        $this->map(['POST'], $pattern, $callable);
-        return $this;
-    }
-
-    public function put(String $pattern, $callable): Router
-    {
-        $this->map(['PUT'], $pattern, $callable);
-        return $this;
-    }
-
-    public function delete(String $pattern, $callable): Router
-    {
-        $this->map(['DELETE'], $pattern, $callable);
-        return $this;
-    }
-
-    public function any(String $pattern, $callable): Router
-    {
-        $this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $pattern, $callable);
-        return $this;
-    }
-
-    public function group(String $pattern, $callback)
-    {
-        $this->last = [];
+        // Clears the history of the last routes
+        $this->last->cleanLast();
+        // Start RouterGroup
         call_user_func($callback, new RouterGroup($pattern));
         return $this;
     }
 
-    public function add(...$mids)
+    /**
+     * Add
+     * Set Middlewares for routes
+     *
+     * @param array ...$mids
+     * @return void
+     */
+    public function add(...$mids): void
     {
-        if ($this->middlewares === null) {
-            $this->middlewares = MiddlewareHandler::getInstance();
-        };
+        $this->getInstances();
 
-        $this->middlewares->add($this->last, $mids);
-        $this->last = [];
-
+        // Set middlewares
+        $this->middlewares->add($this->last->getLast(), $mids);
+        // Clears the history of the last routes
+        $this->last->cleanLast();
     }
 
-    function use (String $pattern, String $fileRoute) {
-        if (substr($fileRoute, -4) === '.php') {
-            $f = $fileRoute;
-        } else {
-            $f = $fileRoute . '.php';
-        };
+    /**
+     * Use
+     * defines a file to serve routes with a certain prefix
+     *
+     * @param String $pattern
+     * @param String $fileRoute
+     * @return void
+     */
+    public function use(String $pattern, String $fileRoute)
+    {
+        $this->getInstance();
 
-        if (!file_exists($f)) {
-            $this->request->error = [
+        $f = (substr($fileRoute, -4) === '.php') ? $fileRoute : $fileRoute . '.php';
+
+        if (file_exists($f)) {
+            // Clears the history of the last routes
+            $this->last->cleanLast();
+            // Start RouterUse
+            new RouterUse($pattern, $f);
+
+            return $this;
+        } else {
+
+            // return error
+            $error = [
                 'code' => 404,
                 'title' => 'Route file not found',
                 'details' => [
                     'File' => $f,
                 ],
             ];
-            $this->responseError();
-        };
 
-        $this->last = [];
-        new RouterUse($pattern, $f);
+            $this->dispatcher->responseError($error);
+            exit;
+        };
     }
 
+    /**
+     * Where
+     * set params pattern
+     *
+     * @param array $arr
+     * @return void
+     */
+    public function where(array $arr)
+    {
+        $this->getInstances();
+        foreach ($this->last->getLast() as $method => $routes) {
+            foreach ($routes as $route) {
+                foreach ($arr as $key => $pattern) {
+                    if (strstr($route, ':' . $key)) {
+                        $this->routerCollection->setParamsPatternInRoute($method, $route, $key, $pattern);
+                    };
+                };
+            }
+        };
+    }
+
+    /**
+     * Fallback
+     * set default route to 404
+     *
+     * @param callable|string $callable
+     * @return Router
+     */
+    public function fallback($callable): Router
+    {
+        $this->getInstances();
+
+        $this->routerCollection->setFallback($callable);
+        return $this;
+    }
+
+    /**
+     * Run
+     * Start application
+     *
+     * @return void
+     */
     public function run(): void
     {
-        header('Access-Control-Allow-Origin: ' . $this->corsOrigin);
-        header('Access-Control-Allow-Methods: ' . $this->corsMethods);
-        header('Access-Control-Allow-Headers: ' . $this->corsHeaders);
-
-        $this->request = new Request();
-        $this->response = new Response();
-
-        $this->match();
+        $this->getInstance();
+        $this->dispatcher->match();
         exit;
     }
 
-    private function match()
+    /**
+     * Get Instances
+     *
+     * @return void
+     */
+    private function getInstances()
     {
-
-        $method = $this->request->getMethod();
-
-        if (isset($this->map[$method])) {
-            // Loop em todas as routes
-            foreach ($this->map[$method] as $pt => $call) {
-                // identifica os argumentos e substitui por regex
-                $pattern = '/' . preg_replace('(\:[a-z0-9-]{0,})', '([a-z0-9-]{0,})', $pt);
-                $pattern = Utils::clearURI($pattern);
-                // faz o match de URL
-                if (preg_match('#^(' . $pattern . ')$#i', $this->request->getUri(), $matches) === 1) {
-                    array_shift($matches);
-                    array_shift($matches);
-                    //Pega todos os argumentos para associar
-                    $items = array();
-                    if (preg_match_all('(\:[a-z0-9]{0,})', $pt, $m)) {
-                        $items = preg_replace('(\:)', '', $m[0]);
-                    };
-                    // Faz a associação dos argumentos
-                    $args = array();
-                    foreach ($matches as $key => $match) {
-                        $args[$items[$key]] = $match;
-                    };
-                    // seta os argumentos
-                    $this->request->params = $args;
-                    // Verifica se esta rota possui Middlewares Cadastrados
-                    $mid = MiddlewareHandler::getInstance();
-                    $midThisRoute = $mid->getMiddlewaresThisRoute($method, $pt);
-                    if ($midThisRoute && count($midThisRoute) > 0) {
-                        $mid::executeMiddlewares($midThisRoute, $this->request, $this->response);
-                    };
-                    if (is_string($call)) {
-                        $this->callableController($call);
-                        exit;
-                    };
-                    if (is_callable($call)) {
-                        $this->callableFunction($call);
-                        exit;
-                    };
-                    break;
-                };
-            };
+        // Get instance RouterCollection
+        if ($this->routerCollection === null) {
+            $this->routerCollection = RouterCollection::getInstance();
         };
 
-        $this->request->error = [
-            'code' => 404,
-            'title' => 'Not Found Route',
-            'details' => [
-                'Route' => $this->request->getUri(),
-            ],
-        ];
-        $this->responseError();
-    }
-
-    private function callableController($callable)
-    {
-        if (!empty($callable)) {
-            $call = explode(':', $callable);
-            if (is_array($call) && count($call) === 2) {
-                $class = trim($call[0]);
-                $action = trim($call[1]);
-
-                if (class_exists($class) && method_exists($class, $action)) {
-                    $controller = new $class;
-                    return call_user_func_array(
-                        array($controller, $action), [
-                            $this->request,
-                            $this->response,
-                        ]
-                    );
-                };
-            };
+        // Get instance MiddlewareHandler
+        if ($this->middlewares === null) {
+            $this->middlewares = MiddlewareHandler::getInstance();
         };
 
-        $this->request->error = [
-            'code' => 501,
-            'title' => 'Method not implemented',
-            'details' => [
-                'Method' => $callable,
-            ],
-        ];
+        // Get instance Last
+        if ($this->last === null) {
+            $this->last = new LastRouter();
+        };
 
-        $this->responseError();
+        // Get instance Error
+        if ($this->error === null) {
+            $this->error = Error::getInstance();
+        };
+
+        // Get instance Dispatcher
+        if ($this->dispatcher === null) {
+            $this->dispatcher = new Dispatcher();
+        };
     }
 
-    private function callableFunction($callable)
-    {
-        $callable(
-            $this->request,
-            $this->response
-        );
-    }
+    /**********************
+     * Group
+     **********************/
 
     /**
-     *  Settings Cors
+     * Disable Group
+     * set 'isGroup' to TRUE
+     *
+     * @return void
      */
-    public function setOriginCors(String $value = '*')
-    {
-        $this->corsOrigin = $value;
-        return $this;
-    }
-
-    public function setMethodsCors(String $value = '*')
-    {
-        $this->corsMethods = $value;
-        return $this;
-    }
-
-    public function setHeadersCors(String $value = 'true')
-    {
-        $this->corsHeaders = $value;
-        return $this;
-    }
-
-    /**
-     * Set Response Error
-     */
-    public function setResponseErrorsWithJson()
-    {
-        $this->reportError = 'json';
-        return $this;
-    }
-
-    public function setResponseErrorsWithHtml()
-    {
-        $this->reportError = 'html';
-        return $this;
-    }
-
-    public function hasError($callable)
-    {
-        $this->hasError = $callable;
-        return $this;
-    }
-
-    public function responseError()
-    {
-        if (!empty($this->hasError)) {
-            if (is_string($this->hasError)) {
-                $this->callableController($this->hasError);
-                exit;
-            };
-
-            if (is_callable($this->hasError)) {
-                $this->callableFunction($this->hasError);
-                exit;
-            };
-        }
-
-        $code = $this->request->error['code'];
-        $title = $this->request->error['title'];
-        $details = $this->request->error['details'];
-
-        if ($this->reportError === 'html') {
-            new HtmlErrorRenderer($code, $title, $details);
-        } else if ($this->reportError === 'json') {
-            new JsonErrorRenderer($code, $title, $details);
-        };
-    }
-
-    public function activateGroup()
+    public function activateGroup(): void
     {
         $this->isGroup = true;
     }
 
-    public function disableGroup()
+    /**
+     * Disable Group
+     * set 'isGroup' to FALSE
+     *
+     * @return void
+     */
+    public function disableGroup(): void
     {
         $this->isGroup = false;
+    }
+
+    /**********************
+     * Set Response Error
+     **********************/
+    /**
+     * Set Error Response Type
+     *
+     * @param string $type ['json' | 'html']
+     * @return Router
+     */
+    public function setErrorResponseType(string $type): Router
+    {
+        $error = Error::getInstance();
+        if (strtoupper($type) === 'JSON') {
+            $error->setErrorsWithJson();
+        } elseif (strtoupper($type) === 'HTML') {
+            $error->setErrorsWithHtml();
+        };
+        return $this;
     }
 }

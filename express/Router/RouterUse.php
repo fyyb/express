@@ -1,73 +1,108 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Fyyb\Router;
 
 use Fyyb\Router;
-use Fyyb\Interfaces\RouterInterface;
-use Fyyb\Middleware\MiddlewareHandler;
+use Fyyb\Router\RouterCollection;
+use Fyyb\Router\RouterDefault;
 
-class RouterUse implements RouterInterface
+class RouterUse extends RouterDefault
 {
-    private $use;
-    private $router;
-    private $middlewares;
 
-    public function __construct($pattern, $file)
+    /**
+     * route prefix
+     *
+     * @var string
+     */
+    private $use;
+
+    /**
+     * instance of Router
+     *
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * instance of RouterCollection
+     *
+     * @var RouterCollection
+     */
+    private $routerCollection;
+
+    /**
+     * Class Constructor
+     *
+     * @param string $pattern
+     * @param string $file
+     */
+    public function __construct(string $pattern, string $file)
     {
         $this->use = $pattern;
         $this->router = Router::getInstance();
+        $this->routerCollection = RouterCollection::getInstance();
+
         require_once $file;
         return $this;
     }
-    
-    public function map(Array $method, String $pattern, $callable)
-    {
-        $this->router->map($method, $this->use.$pattern, $callable);
-        return $this;
-	}
 
-    public function get(String $pattern, $callable) :RouterUse
+    /**
+     * MAP
+     *
+     * @param array $method
+     * @param string $pattern
+     * @param string|callable $callable
+     * @return void
+     */
+    public function map(array $method, string $pattern, $callable)
     {
-        $this->map(['GET'], $pattern, $callable);
-        return $this;
-	}
-
-    public function post(String $pattern, $callable) :RouterUse
-    {
-		$this->map(['POST'], $pattern, $callable);
-		return $this;
-	}
-
-    public function put(String $pattern, $callable) :RouterUse
-    {
-		$this->map(['PUT'], $pattern, $callable);
-		return $this;
-	}
-
-    public function delete(String $pattern, $callable) :RouterUse
-    {
-		$this->map(['DELETE'], $pattern, $callable);
-		return $this;
-	}
-
-    public function any(String $pattern, $callable) :RouterUse
-    {
-		$this->map(['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], $pattern, $callable);
-		return $this;
-    }
-
-    
-    public function group(String $pattern, $callback)
-    {
-        $this->router->group($this->use.$pattern, $callback);
+        $this->router->map($method, $this->use . $pattern, $callable);
         return $this;
     }
-    
+
+    /**
+     * Group
+     *
+     * @param string $pattern
+     * @param string|callable $callback
+     * @return void
+     */
+    public function group(string $pattern, $callback)
+    {
+        $this->router->group($this->use . $pattern, $callback);
+        return $this;
+    }
+
+    /**
+     * Add
+     *
+     * @param array ...$mids
+     * @return void
+     */
     public function add(...$mids)
     {
         $this->router->add(...$mids);
     }
 
+    /**
+     * Where
+     * set params pattern
+     *
+     * @param array $arr
+     * @return void
+     */
+    public function where(array $arr)
+    {
+        foreach ($this->last->getLast() as $method => $routes) {
+            foreach ($routes as $route) {
+                foreach ($arr as $key => $pattern) {
+                    if (strstr($route, ':' . $key)) {
+                        $this->routerCollection->setParamsPatternInRoute($method, $route, $key, $pattern);
+                    };
+                };
+            };
+        };
+    }
 }

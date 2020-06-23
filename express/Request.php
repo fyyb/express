@@ -1,13 +1,14 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Fyyb;
 
 use Fyyb\Http\HttpPopulateTrait;
+use Fyyb\Http\HttpRequestResponseMethods;
 use Fyyb\Support\Utils;
 
-class Request
+class Request extends HttpRequestResponseMethods
 {
     use HttpPopulateTrait;
 
@@ -22,95 +23,117 @@ class Request
         };
     }
 
+    /**
+     * Get URI
+     * return request URI
+     *
+     * @return String
+     */
     public function getURI(): String
     {
-        if (defined('ENVIRONMENT')) {
-            if (ENVIRONMENT === 'dev') {
-                if (defined('BASE_DIR')) {
-                    $uri = '/' . str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
-                };
-            };
-        } else {
-            $uri = '/' . $_SERVER['REQUEST_URI'];
+        if (defined('BASE_DIR')) {
+            $uri = '/' . str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
         };
 
         $uri = str_replace('?' . $_SERVER['QUERY_STRING'], '', $uri);
         return Utils::clearURI($uri);
     }
 
+    /**
+     * Get Method
+     * return request HTTP Method
+     *
+     * @return String
+     */
     public function getMethod(): String
     {
         return $_SERVER['REQUEST_METHOD'];
     }
 
-    public function getParams(): array
+    /**
+     * Get Params
+     * returns parameters passed in the request URL
+     *
+     * @param String $filter
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getParams(String $filter = '', $default = null)
     {
-        return Utils::convertDataToArray($this->params);
+        $data = Utils::convertDataToArray($this->params);
+        return self::returnData($data, $filter, $default);
     }
 
-    public function getParsedBody(): array
+    /**
+     * Get Parsed Body
+     * returns parameters passed in the request body
+     *
+     * @param String $filter
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getParsedBody(String $filter = '', $default = null)
     {
         $data = json_decode(file_get_contents('php://input'));
-        return Utils::convertDataToArray(array_merge((array) $data, $_POST));
+        $data = Utils::convertDataToArray(array_merge((array) $data, $_POST));
+        return self::returnData($data, $filter, $default);
     }
 
+    /**
+     * Get Query String
+     * returns parameters passed by query string
+     *
+     * @param String $filter
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getQueryString(String $filter = '', $default = null)
+    {
+        return self::returnData($_GET, $filter, $default);
+    }
+
+    /**
+     * Get Uploaded Files
+     * equivalent to $ _FILES
+     *
+     * @return array
+     */
     public function getUploadedFiles(): array
     {
         return $_FILES;
     }
 
-    public function getQueryString(): array
+    /**
+     * Return Data
+     * auxiliary function that handles the return of filtered or unfiltered data
+     *
+     * @param array $data
+     * @param String $filter
+     * @param mixed $default
+     * @return mixed
+     */
+    private static function returnData(array $data, String $filter, $default = null)
     {
-        return $_GET;
+        if (!empty($filter)) {
+            if (isset($data[$filter])) {
+                return $data[$filter];
+            } elseif (!empty($default)) {
+                return $default;
+            } else {
+                return null;
+            }
+        }
+        return $data;
     }
 
-    public static function setHeader($header, $value)
-    {
-        if (!self::hasHeader($header)) {
-            header($header . ':' . $value);
-        };
-    }
-
-    public static function getHeaders()
+    /**
+     * Get Header
+     * returns the list of headers
+     *
+     * @return array
+     */
+    public static function getHeaders(): array
     {
         return apache_request_headers();
-    }
-
-    public static function getHeader($header)
-    {
-        $headers = self::getHeaders();
-        foreach ($headers as $h => $value) {
-            if ($h === $header) {
-                return $value;
-            };
-        };
-    }
-
-    public static function hasHeader($header)
-    {
-        $headers = self::getHeaders();
-        foreach ($headers as $h) {
-            if ($h === $header) {
-                return true;
-            };
-        };
-        return false;
-    }
-
-    public static function appendHeader($header, $value)
-    {
-        if (self::hasHeader($header)) {
-            $oldValue = self::getHeader($header);
-            $newValue = $oldValue . ', ' . $value;
-            self::withoutHeader($header);
-            self::setHeader($header, $newValue);
-        }
-    }
-
-    public static function withoutHeader($header)
-    {
-        if (self::hasHeader($header)) {
-            header_remove($header);
-        };
     }
 }
