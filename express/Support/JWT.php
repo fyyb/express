@@ -1,89 +1,146 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Support;
 
 class JWT
 {
+    /**
+     * @var array
+     */
     private $headers;
+
+    /**
+     * @var array
+     */
     private $claims;
+
+    /**
+     * @var array
+     */
     private $payload;
+
+    /**
+     * @var string
+     */
     private $signature;
+
+    /**
+     * @var string
+     */
     private $token;
 
-    public function __construct(String $jwt = '')
-    {
-        if ($jwt !== '') {
-            $t = explode('.', $jwt);
-            if (count($t) === 3) {
-                $this->headers = $this->jsonDecode($this->base64url_decode($t[0]));
-                $this->claims = $this->jsonDecode($this->base64url_decode($t[1]));
-                $this->setPayload();
-                $this->signature = $t[2];
-                $this->token = $jwt;
-            };
-        } else {
-            $this->headers = [
-                'typ' => 'JWT',
-                'alg' => 'HS256',
-            ];
-            if (defined('JWT')) {
-                if (!empty(JWT['iss'])) {
-                    $this->claims['iss'] = JWT['iss'];
-                };
+    /**
+     * @var array
+     */
+    private $error;
 
-                if (!empty(JWT['jti'])) {
-                    $this->headers['jti'] = JWT['jti'];
-                    $this->claims['jti'] = JWT['jti'];
-                };
+    public function __construct()
+    {
+        $this->headers = ['typ' => 'JWT', 'alg' => 'HS256'];
+
+        if (defined('JWT')) {
+            if (!empty(JWT['iss'])) {
+                $this->claims['iss'] = JWT['iss'];
+            };
+
+            if (!empty(JWT['jti'])) {
+                $this->headers['jti'] = JWT['jti'];
+                $this->claims['jti'] = JWT['jti'];
             };
         };
     }
 
-    public function getHeaders()
+    /**
+     * Get headers
+     *
+     * @return array
+     */
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function hasHeader($name)
+    /**
+     * Check if a header exists
+     *
+     * @param String $name
+     * @return Bool
+     */
+    public function hasHeader(String $name): Bool
     {
         return array_key_exists($name, $this->headers);
     }
 
-    public function getHeader($name)
+    /**
+     * Get header
+     *
+     * @param String $name
+     * @return String|null
+     */
+    public function getHeader(String $name): ?String
     {
         if ($this->hasHeader($name)) {
             return $this->getHeaderValue($name);
         };
-        return false;
+        return NULL;
     }
 
-    private function getHeaderValue($name)
+    /**
+     * Get header Value
+     *
+     * @param String $name
+     * @return String
+     */
+    private function getHeaderValue(String $name): String
     {
         $header = $this->headers[$name];
         return $header;
     }
 
-    public function getClaims()
+    /**
+     * Get claims
+     *
+     * @return array
+     */
+    public function getClaims(): array
     {
         return $this->claims;
     }
 
-    public function hasClaim($name)
+    /**
+     * Check if a claims exists
+     *
+     * @param String $name
+     * @return Bool
+     */
+    public function hasClaim(String $name): Bool
     {
         return array_key_exists($name, $this->claims);
     }
 
-    public function getClaim($name)
+    /**
+     * Get claim
+     *
+     * @param String $name
+     * @return String|null
+     */
+    public function getClaim(String $name): ?String
     {
         if ($this->hasClaim($name)) {
             return $this->getClaimValue($name);
         };
-        return false;
+        return NULL;
     }
 
-    private function getClaimValue($name)
+    /**
+     * Get claim value
+     *
+     * @param String $name
+     * @return String
+     */
+    private function getClaimValue(String $name): String
     {
         $claim = $this->claims[$name];
         return $claim;
@@ -137,7 +194,7 @@ class JWT
                     $exp = JWT['exp'];
                 }
             } else {
-                $exp = '30 minutes';
+                $exp = '+1 hour';
             }
             $this->setExpiration(strtotime($exp));
         };
@@ -176,13 +233,26 @@ class JWT
             throw new \Exception("Not found the key 'key' in the JWT constant! \n JWT['key'] = undefined");
         };
 
-        throw new \Exception("You need to define the JWT constant in your settings.php file");
+        throw new \Exception("You need to define the JWT constant in your config.php file");
     }
 
-    public function verify()
+    public function verify(String $jwt)
     {
-        $arr = array('stt' => false);
         $time = time();
+
+        $t = explode('.', $jwt);
+        if (count($t) === 3) {
+            $this->headers = $this->jsonDecode($this->base64url_decode($t[0]));
+            $this->claims = $this->jsonDecode($this->base64url_decode($t[1]));
+            $this->setPayload();
+            $this->signature = $t[2];
+            $this->token = $jwt;
+        } else {
+            $arr['error']['cod'] = "JWT";
+            $arr['error']['msg'] = "Invalid token format";
+            $this->error = $arr;
+            return false;
+        };
 
         if (
             !isset($this->claims['nbf']) || empty($this->claims['nbf']) ||
@@ -192,23 +262,25 @@ class JWT
         ) {
             $arr['error']['cod'] = "JWT";
             $arr['error']['msg'] = "Invalid token";
-            return $arr;
+            $this->error = $arr;
+            return false;
         };
 
         if ($this->getClaim('nbf') > $time) {
             $arr['error']['cod'] = "JWT";
-            $arr['error']['msg'] = "Token not available ('nbf')";
-            return $arr;
+            $arr['error']['msg'] = "Token not available";
+            $this->error = $arr;
+            return false;
         };
 
         if ($this->getClaim('exp') < $time) {
             $arr['error']['cod'] = "JWT";
-            $arr['error']['msg'] = "Expired token ('exp')";
-            return $arr;
+            $arr['error']['msg'] = "Expired token";
+            $this->error = $arr;
+            return false;
         };
 
-        $arr['stt'] = true;
-        return $arr;
+        return true;
     }
 
     private function jsonEncode($data)
@@ -230,12 +302,17 @@ class JWT
     {
         return base64_decode(
             strtr($data, '-_', '+/') .
-            str_repeat('=', 3 - (3 + strlen($data)) % 4)
+                str_repeat('=', 3 - (3 + strlen($data)) % 4)
         );
     }
 
     public function getToken()
     {
         return $this->token;
+    }
+
+    public function getError()
+    {
+        return $this->error;
     }
 }

@@ -1,14 +1,26 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Support;
 
 class Model
 {
-    protected $data = array();
+    /**
+     * @var array
+     */
+    protected $data = [];
 
-    public function __call($name, $args)
+    /**
+     * @var array
+     */
+    protected $hidden = [];
+
+    /**
+     * @param String $name
+     * @param Array $args
+     */
+    public function __call(String $name, array $args)
     {
         $method = substr($name, 0, 3);
         $fieldName = strtolower(substr($name, 3, strlen($name)));
@@ -24,15 +36,37 @@ class Model
         };
     }
 
-    public function setData($data = array())
+    /**
+     * Set Data
+     *
+     * @param Array $data
+     * @return void
+     */
+    public function setData(array $data = array()): void
     {
         foreach ($data as $key => $value) {
             $this->{'set' . ucfirst($key)}($value);
         }
+        return;
     }
 
-    public function getData()
+    /**
+     * Get Data
+     *
+     * @return Array
+     */
+    public function getData(): array
     {
-        return $this->data;
+        $data = $this->data;
+
+        if (count($this->hidden) > 0) {
+            foreach ($this->hidden as $key) {
+                if (array_key_exists($key, $data)) {
+                    unset($data[$key]);
+                };
+            };
+        }
+
+        return $data;
     }
 }

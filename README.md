@@ -65,6 +65,8 @@ If your project directory is different from the root, configure the BASE_DIR con
 
     const BASE_DIR = '/ path / to / project /';
 
+    ...
+
 ```
 
 ## Hello world
@@ -74,8 +76,8 @@ See how easy it is, in your index.php, insert the code below:
 ```php
 <?php
 
-    require __DIR__ . "./config.php";
-    require __DIR__ . "./vendor/autoload.php";
+    require __DIR__ . "/config.php";
+    require __DIR__ . "/vendor/autoload.php";
 
     use Fyyb\Router;
     use Fyyb\Request;
@@ -106,10 +108,10 @@ Route definition takes the following structure:
 
 Where:
 
-- \$app is an instance of fyyb/express.
-- METHOD is an HTTP request method, in lowercase.
-- PATH is a path on the server.
-- HANDLER is the function executed when the route is matched.
+-   \$app is an instance of fyyb/express.
+-   METHOD is an HTTP request method, in lowercase.
+-   PATH is a path on the server.
+-   HANDLER is the function executed when the route is matched.
 
 The following examples illustrate defining simple routes.
 Respond with Hello World! on the homepage:
@@ -160,11 +162,11 @@ Or customize the methods with map function
 
 Where:
 
-- \$app is an instance of fyyb/express.
-- map is a routing function.
-- [METHOD] is an array of HTTP request methods.
-- PATH is a path on the server.
-- HANDLER is the function performed when the route is matched.
+-   \$app is an instance of fyyb/express.
+-   map is a routing function.
+-   [METHOD] is an array of HTTP request methods.
+-   PATH is a path on the server.
+-   HANDLER is the function performed when the route is matched.
 
 Respond to a GET and POST request to the /test route:
 

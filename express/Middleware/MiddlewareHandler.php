@@ -1,10 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Middleware;
 
-use Closure;
+use \Closure;
 use Fyyb\Request;
 use Fyyb\Response;
 use Fyyb\Router\Dispatcher;

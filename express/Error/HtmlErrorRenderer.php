@@ -1,21 +1,21 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Error;
 
+use Fyyb\Request;
 use Fyyb\Response;
 
 class HtmlErrorRenderer
 {
     /**
-     * @param Int $code
-     * @param String $title
-     * @param Array $details
+     * @param Request $req
+     * @param Response $res
      */
-    public function __construct(Int $code, String $title, array $details = [])
+    public function __construct(Request $req, Response $res)
     {
-        self::renderError($code, $title, $details);
+        self::renderError($req, $res);
     }
 
     /**
@@ -24,12 +24,12 @@ class HtmlErrorRenderer
      * @param Array $details
      * @return void
      */
-    private static function renderError(Int $code, String $title, array $details): void
+    private static function renderError($req, $res): void
     {
         $html = '<html>' .
             '   <head>' .
             "       <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>" .
-            '       <title>' . $title . '</title>' .
+            '       <title>' . $req->error['title'] . '</title>' .
             '       <style>' .
             '           body{margin:0;padding:30px;font:12px/1.5 Helvetica,Arial,Verdana,sans-serif}' .
             '           h1{margin:0;font-size:48px;font-weight:normal;line-height:48px}' .
@@ -39,13 +39,13 @@ class HtmlErrorRenderer
             '       </style>' .
             '   </head>' .
             '   <body>' .
-            '       <h1>' . $title . '</h1>';
+            '       <h1>' . $req->error['title'] . '</h1>';
 
-        if (count($details) > 0) {
+        if (count($req->error['details']) > 0) {
             $html .= '       <p>The application could not run because of the following error:</p>' .
                 '       <h2>Details</h2>' .
                 '       <ul>';
-            foreach ($details as $key => $value) {
+            foreach ($req->error['details'] as $key => $value) {
                 $html .= '       <li><span><strong>' . $key . ':</strong> ' . $value . '</span></li>';
             };
 
@@ -56,7 +56,6 @@ class HtmlErrorRenderer
             '   </body>' .
             '</html>';
 
-        $res = new Response();
-        $res->send($html, $code);
+        $res->send($html, $req->error['code']);
     }
 }

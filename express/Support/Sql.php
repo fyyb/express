@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Support;
 
@@ -9,9 +9,12 @@ use \PDOException;
 
 class Sql extends PDO
 {
+    /**
+     * @var PDO
+     */
     protected $pdo;
 
-    public function __construct($config)
+    public function __construct(array $config)
     {
         try {
             $this->pdo = new PDO(
@@ -27,7 +30,7 @@ class Sql extends PDO
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            die(print 'Erro ao acessar o Banco de Dados =(');
+            die(print 'Error accessing the database =(');
         };
         return;
     }

@@ -128,8 +128,6 @@ class RouterTest
     }
 }
 
-// $test = new RouterTest('./routes.json');
-// $test->test();
-
-$test = new RouterTest('./where.json');
+$test = new RouterTest('./routes.json');
+// $test = new RouterTest('./where.json');
 $test->test();

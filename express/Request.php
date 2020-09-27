@@ -31,11 +31,7 @@ class Request extends HttpRequestResponseMethods
      */
     public function getURI(): String
     {
-        if (defined('BASE_DIR')) {
-            $uri = '/' . str_replace(BASE_DIR, '', $_SERVER['REQUEST_URI']);
-        } else {
-            $uri = '/' . $_SERVER['REQUEST_URI'];       
-        };
+        $uri = '/' . str_replace((defined('BASE_DIR') ? BASE_DIR : ''), '', $_SERVER['REQUEST_URI']);
 
         $uri = str_replace('?' . $_SERVER['QUERY_STRING'], '', $uri);
         return Utils::clearURI($uri);

@@ -1,3 +1,3 @@
 <?php
 
-const BASE_DIR = 'fyyb/example/';
+const BASE_DIR = '/example';

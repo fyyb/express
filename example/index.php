@@ -1,7 +1,7 @@
 <?php
 
-require __DIR__ . "./settings.php";
-require __DIR__ . "./vendor/autoload.php";
+require __DIR__ . DIRECTORY_SEPARATOR . "settings.php";
+require __DIR__ . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
 
 use Fyyb\Cors;
 use Fyyb\Request;
@@ -11,9 +11,9 @@ use Fyyb\Router;
 $app = Router::getInstance();
 $app->setErrorResponseType('json');
 
-require __DIR__ . "./TesteRouterGroups.php";
-require __DIR__ . "./TesteRouterGroup.php";
-require __DIR__ . "./TesteRouterSimples.php";
+require __DIR__ . "/TesteRouterGroups.php";
+require __DIR__ . "/TesteRouterGroup.php";
+require __DIR__ . "/TesteRouterSimples.php";
 
 $app->use('/use', './App/Routes/TesteRouterGroups.php');
 $app->use('/use', './App/Routes/TesteRouterGroup.php');
@@ -57,9 +57,13 @@ $app->any('/params/file', function (Request $req, Response $res) {
     exit;
 });
 
+$app->fallback(function (Request $req, Response $res) {
+    $res->json(['error' => 404], 404);
+});
+
 $cors = Cors::getInstance();
-$cors->setOriginCors();
-$cors->setHeadersCors();
-$cors->setMethodsCors();
+$cors->setOriginCors('*');
+$cors->setHeadersCors('authorization');
+$cors->setMethodsCors('*');
 
 $app->run();

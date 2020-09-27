@@ -6,32 +6,47 @@ namespace Fyyb\Support;
 
 class Utils
 {
-    public static function clearURI(String $uri) :String
+    /**
+     * clear URI
+     *
+     * @param String $uri
+     * @return String
+     */
+    public static function clearURI(String $uri): String
     {
-        for ($i=0; $i < substr_count($uri, '/'); $i++) {
+        for ($i = 0; $i < substr_count($uri, '/'); $i++) {
             $uri = str_replace('//', '/', $uri);
         };
-        
+
         if (strlen($uri) > 1) {
             if (substr($uri, -1) === '/') {
                 $uri = substr($uri, 0, -1);
             }
         }
-        
+
         return $uri;
     }
 
-    public static function convertDataToArray($data = []) :array
+    /**
+     * Convert Data to Array
+     *
+     * @param Array $data
+     * @return array
+     */
+    public static function convertDataToArray(array $data = []): array
     {
         $formatedData = [];
-        foreach ($data as $key => $value) {
-            if (gettype($value) === 'object') {
-                $formatedData[$key] = self::convertDataToArray($value);
-            } else {
-                $formatedData[$key] = $value;
+
+        if ($data) {
+            foreach ($data as $key => $value) {
+                if (gettype($value) === 'object') {
+                    $formatedData[$key] = self::convertDataToArray($value);
+                } else {
+                    $formatedData[$key] = $value;
+                }
             }
         }
-  
+
         return $formatedData;
     }
 }

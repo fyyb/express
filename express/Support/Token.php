@@ -6,10 +6,16 @@ namespace Fyyb\Support;
 
 class Token
 {
-    public static function create($ncaract = '')
+    /**
+     * Returns a token of up to 128 characters
+     *
+     * @param Int $ncaract
+     * @return String
+     */
+    public static function create(Int $ncaract = 0): String
     {
-        $final = (empty($ncaract))?128:$ncaract;
-        $hash  = hash('whirlpool', (md5(time().rand(0, 999999)).time().rand(0, 999999)));
-        return substr($hash, 0, (($final>strlen($hash))?strlen($hash):$final));
+        $final = ($ncaract <= 0) ? 128 : $ncaract;
+        $hash  = hash('whirlpool', (md5(time() . rand(0, 999999)) . time() . rand(0, 999999)));
+        return substr($hash, 0, (($final > strlen($hash)) ? strlen($hash) : $final));
     }
 }

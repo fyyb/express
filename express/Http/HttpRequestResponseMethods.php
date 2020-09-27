@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Http;
 
@@ -16,7 +16,7 @@ class HttpRequestResponseMethods
      */
     public static function setHeader(String $header, String $value): void
     {
-        if (!self::hasHeader($header)) {
+        if (!get_called_class()::hasHeader($header)) {
             header($header . ':' . $value);
         };
     }
@@ -41,7 +41,7 @@ class HttpRequestResponseMethods
      */
     public static function getHeader(String $header): ?string
     {
-        $headers = self::getHeaders();
+        $headers = get_called_class()::getHeaders();
         foreach ($headers as $h => $value) {
             if ($h === $header) {
                 return $value;
@@ -59,7 +59,7 @@ class HttpRequestResponseMethods
      */
     public static function hasHeader(String $header): bool
     {
-        $headers = self::getHeaders();
+        $headers = get_called_class()::getHeaders();
         foreach ($headers as $h) {
             if ($h === $header) {
                 return true;
@@ -78,11 +78,11 @@ class HttpRequestResponseMethods
      */
     public static function appendHeader(String $header, String $value): void
     {
-        if (self::hasHeader($header)) {
-            $oldValue = self::getHeader($header);
+        if (get_called_class()::hasHeader($header)) {
+            $oldValue = get_called_class()::getHeader($header);
             $newValue = $oldValue . ', ' . $value;
-            self::withoutHeader($header);
-            self::setHeader($header, $newValue);
+            get_called_class()::withoutHeader($header);
+            get_called_class()::setHeader($header, $newValue);
         }
     }
 
@@ -95,7 +95,7 @@ class HttpRequestResponseMethods
      */
     public static function withoutHeader(String $header): void
     {
-        if (self::hasHeader($header)) {
+        if (get_called_class()::hasHeader($header)) {
             header_remove($header);
         };
     }

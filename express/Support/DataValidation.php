@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Support;
 
@@ -8,34 +8,61 @@ use \stdClass;
 
 class DataValidation
 {
+    /**
+     * @var \stdClass
+     */
     private $data;
 
     public function __construct()
     {
         $this->data = new stdClass();
+        return $this;
     }
 
-    public function verify(array $inputs, array $required)
+    /**
+     * Check function
+     *
+     * @param array $inputs
+     * @param array $required
+     * @return DataValidation
+     */
+    public function check(array $inputs, array $required): DataValidation
     {
         $this->data->inputs = $inputs;
         $this->data->error = array();
 
         foreach ($required as $req) {
-            if (!in_array($req, array_keys($this->data->inputs)) || empty($this->data->inputs[$req])) {
+            if (
+                !in_array($req, array_keys($this->data->inputs)) ||
+                empty($this->data->inputs[$req])
+            ) {
                 $this->data->error[] = $req;
             };
         };
 
-        return (count($this->data->error) === 0);
+        return $this;
     }
 
-    public function getError()
+    /**
+     * Verify function
+     *
+     * @return Bool
+     */
+    public function verify(): Bool
     {
-        return $this->data->error;
+        return count($this->data->error) === 0;
     }
 
-    public function getErrorMessage()
+
+    /**
+     * GetErrorMessage function
+     *
+     * @return String
+     */
+    public function getErrorMessage(): String
     {
-        return (count($this->data->error) !== 0) ? 'required fields (' . implode(', ', $this->data->error) . ') not sent' : '';
+        return (count($this->data->error) !== 0)
+            ? 'required fields not sent or invalid. (' . implode(', ', $this->data->error) . ')'
+            : '';
     }
 }

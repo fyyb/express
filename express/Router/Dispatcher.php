@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Router;
 
@@ -46,8 +46,6 @@ class Dispatcher
 
     public function __construct()
     {
-        // Start CORS
-        $this->defineCors();
         // Start Request
         $this->request = new Request();
         // Start Response
@@ -65,6 +63,8 @@ class Dispatcher
      */
     public function match()
     {
+        // Start CORS
+        $this->defineCors();
         // Get Request Method
         $method = $this->request->getMethod();
         // Get Request URI
@@ -129,6 +129,8 @@ class Dispatcher
                 };
             };
         };
+
+        $this->fallback();
 
         $this->responseError([
             'code' => 404,
@@ -218,31 +220,40 @@ class Dispatcher
      */
     public function responseError(array $error)
     {
-        $this->request->error = $error;
-        $fallback = $this->routerCollection->getFallback();
+        // Start CORS
+        $this->defineCors();
+        $this->fallback();
 
-        if (!empty($fallback)) {
+        $this->request->error = $error;
+
+        if ($this->error->getReportError() === 'html') {
+            new HtmlErrorRenderer($this->request, $this->response);
+        } elseif ($this->error->getReportError() === 'json') {
+            new JsonErrorRenderer($this->request, $this->response);
+        };
+
+        exit;
+    }
+
+    /**
+     * Fallback
+     *
+     * @return void
+     */
+    private function fallback()
+    {
+        $fallback = $this->routerCollection->getFallback();
+        if ($fallback) {
             if (is_string($fallback)) {
                 $this->callableController($fallback);
                 exit;
             };
-
-            if (is_callable($this->fallback)) {
+            if (is_callable($fallback)) {
                 $this->callableFunction($fallback);
                 exit;
             };
         }
 
-        $code = $this->request->error['code'];
-        $title = $this->request->error['title'];
-        $details = $this->request->error['details'];
-
-        if ($this->error->getReportError() === 'html') {
-            new HtmlErrorRenderer($code, $title, $details);
-        } elseif ($this->error->getReportError() === 'json') {
-            new JsonErrorRenderer($code, $title, $details);
-        };
-
-        exit;
+        return;
     }
 }

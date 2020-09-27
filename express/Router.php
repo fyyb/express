@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb;
 
@@ -100,7 +100,7 @@ class Router extends RouterDefault
      * @param array $methods
      * @param String $pattern
      * @param callable|string $callable
-     * @return void
+     * @return Router
      */
     public function map(array $methods, String $pattern, $callable)
     {
@@ -125,7 +125,7 @@ class Router extends RouterDefault
      *
      * @param String $pattern
      * @param callable $callback
-     * @return void
+     * @return Router
      */
     public function group(String $pattern, callable $callback)
     {
@@ -161,11 +161,11 @@ class Router extends RouterDefault
      *
      * @param String $pattern
      * @param String $fileRoute
-     * @return void
+     * @return Router|void
      */
     public function use(String $pattern, String $fileRoute)
     {
-        $this->getInstance();
+        $this->getInstances();
 
         $f = (substr($fileRoute, -4) === '.php') ? $fileRoute : $fileRoute . '.php';
 
@@ -223,7 +223,6 @@ class Router extends RouterDefault
     public function fallback($callable): Router
     {
         $this->getInstances();
-
         $this->routerCollection->setFallback($callable);
         return $this;
     }
@@ -236,7 +235,7 @@ class Router extends RouterDefault
      */
     public function run(): void
     {
-        $this->getInstance();
+        $this->getInstances();
         $this->dispatcher->match();
         exit;
     }
