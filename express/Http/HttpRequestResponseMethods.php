@@ -17,7 +17,7 @@ class HttpRequestResponseMethods
     public static function setHeader(String $header, String $value): void
     {
         if (!get_called_class()::hasHeader($header)) {
-            header($header . ':' . $value);
+            header($header . ': ' . $value);
         };
     }
 
@@ -43,7 +43,7 @@ class HttpRequestResponseMethods
     {
         $headers = get_called_class()::getHeaders();
         foreach ($headers as $h => $value) {
-            if ($h === $header) {
+            if (strtolower($h) === strtolower($header)) {
                 return $value;
             };
         };
@@ -60,8 +60,8 @@ class HttpRequestResponseMethods
     public static function hasHeader(String $header): bool
     {
         $headers = get_called_class()::getHeaders();
-        foreach ($headers as $h) {
-            if ($h === $header) {
+        foreach ($headers as $h => $value) {
+            if (strtolower($h) === strtolower($header)) {
                 return true;
             };
         };
