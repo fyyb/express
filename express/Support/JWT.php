@@ -36,18 +36,24 @@ class JWT
      */
     private $error;
 
-    public function __construct()
+    /**
+     * @var array
+     */
+    private $config;
+
+    public function __construct(array $config = [])
     {
         $this->headers = ['typ' => 'JWT', 'alg' => 'HS256'];
 
-        if (defined('JWT')) {
-            if (!empty(JWT['iss'])) {
-                $this->claims['iss'] = JWT['iss'];
+        if (count($config) > 0) {
+            $this->config = $config;
+            if (isset($config['iss']) && !empty($config['iss'])) {
+                $this->claims['iss'] = $config['iss'];
             };
 
-            if (!empty(JWT['jti'])) {
-                $this->headers['jti'] = JWT['jti'];
-                $this->claims['jti'] = JWT['jti'];
+            if (isset($config['jti']) && !empty($config['jti'])) {
+                $this->headers['jti'] = $config['jti'];
+                $this->claims['jti'] = $config['jti'];
             };
         };
     }
@@ -77,23 +83,23 @@ class JWT
      * Get header
      *
      * @param String $name
-     * @return String|null
+     * @return mixed
      */
-    public function getHeader(String $name): ?String
+    public function getHeader(String $name)
     {
         if ($this->hasHeader($name)) {
             return $this->getHeaderValue($name);
         };
-        return NULL;
+        return false;
     }
 
     /**
      * Get header Value
      *
      * @param String $name
-     * @return String
+     * @return mixed
      */
-    private function getHeaderValue(String $name): String
+    private function getHeaderValue(String $name)
     {
         $header = $this->headers[$name];
         return $header;
@@ -124,23 +130,23 @@ class JWT
      * Get claim
      *
      * @param String $name
-     * @return String|null
+     * @return mixed
      */
-    public function getClaim(String $name): ?String
+    public function getClaim(String $name)
     {
         if ($this->hasClaim($name)) {
             return $this->getClaimValue($name);
         };
-        return NULL;
+        return false;
     }
 
     /**
      * Get claim value
      *
      * @param String $name
-     * @return String
+     * @return mixed
      */
-    private function getClaimValue(String $name): String
+    private function getClaimValue(String $name)
     {
         $claim = $this->claims[$name];
         return $claim;
@@ -190,8 +196,8 @@ class JWT
 
         if (!isset($this->claims['exp']) || empty($this->claims['exp'])) {
             if (defined("JWT")) {
-                if (!empty(JWT['exp'])) {
-                    $exp = JWT['exp'];
+                if (isset($this->config['exp']) && !empty($this->config['exp'])) {
+                    $exp = $this->config['exp'];
                 }
             } else {
                 $exp = '+1 hour';
@@ -218,12 +224,12 @@ class JWT
     private function sign()
     {
         if (defined("JWT")) {
-            if (!empty(JWT['key'])) {
+            if (isset($this->config['key']) && !empty($this->config['key'])) {
                 $s = $this->base64url_encode(
                     hash_hmac(
                         'sha256',
                         implode('.', $this->payload),
-                        JWT['key'],
+                        $this->config['key'],
                         true
                     )
                 );
