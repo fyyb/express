@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Router;
 
@@ -18,7 +18,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function get(string $pattern, $callable)
     {
@@ -32,7 +32,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function post(string $pattern, $callable)
     {
@@ -46,7 +46,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function put(string $pattern, $callable)
     {
@@ -60,7 +60,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function delete(string $pattern, $callable)
     {
@@ -74,7 +74,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function patch(string $pattern, $callable)
     {
@@ -88,7 +88,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function options(string $pattern, $callable)
     {
@@ -102,7 +102,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function head(string $pattern, $callable)
     {
@@ -116,7 +116,7 @@ class RouterDefault implements RouterInterface
      *
      * @param string $pattern
      * @param callable|string $callable
-     * @return
+     * @return mixed
      */
     public function any(string $pattern, $callable)
     {
