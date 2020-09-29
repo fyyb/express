@@ -1,9 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Http;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class HttpResponseCode
 {
     /**

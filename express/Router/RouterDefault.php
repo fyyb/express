@@ -6,6 +6,10 @@ namespace Fyyb\Router;
 
 use Fyyb\Interfaces\RouterInterface;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class RouterDefault implements RouterInterface
 {
     public function map(array $method, string $pattern, $callable)

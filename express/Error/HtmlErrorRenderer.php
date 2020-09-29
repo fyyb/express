@@ -7,6 +7,10 @@ namespace Fyyb\Error;
 use Fyyb\Request;
 use Fyyb\Response;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class HtmlErrorRenderer
 {
     /**

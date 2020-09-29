@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb\Router;
 
@@ -8,6 +8,10 @@ use Fyyb\Router;
 use Fyyb\Router\RouterCollection;
 use Fyyb\Router\RouterDefault;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class RouterUse extends RouterDefault
 {
 
@@ -54,7 +58,7 @@ class RouterUse extends RouterDefault
      * @param array $method
      * @param string $pattern
      * @param string|callable $callable
-     * @return void
+     * @return mixed
      */
     public function map(array $method, string $pattern, $callable)
     {
@@ -67,7 +71,7 @@ class RouterUse extends RouterDefault
      *
      * @param string $pattern
      * @param string|callable $callback
-     * @return void
+     * @return mixed
      */
     public function group(string $pattern, $callback)
     {

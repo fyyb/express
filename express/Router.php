@@ -13,6 +13,10 @@ use Fyyb\Router\RouterDefault;
 use Fyyb\Router\RouterGroup;
 use Fyyb\Router\RouterUse;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class Router extends RouterDefault
 {
     /**

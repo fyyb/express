@@ -7,6 +7,10 @@ namespace Fyyb\Support;
 use \PDO;
 use \PDOException;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class Sql extends PDO
 {
     /**

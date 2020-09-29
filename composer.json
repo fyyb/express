@@ -1,7 +1,7 @@
 {
     "name": "fyyb/express",
     "description": "PHP micro framework that helps you quickly write simple yet powerful web applications and APIs.",
-    "version": "2.0",
+    "version": "2.0.1",
     "keywords": [
         "Fyyb",
         "framework",

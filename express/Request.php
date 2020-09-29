@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb;
 
@@ -8,6 +8,10 @@ use Fyyb\Http\HttpPopulateTrait;
 use Fyyb\Http\HttpRequestResponseMethods;
 use Fyyb\Support\Utils;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class Request extends HttpRequestResponseMethods
 {
     use HttpPopulateTrait;

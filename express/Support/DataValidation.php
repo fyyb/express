@@ -6,6 +6,10 @@ namespace Fyyb\Support;
 
 use \stdClass;
 
+/**
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
+ */
 class DataValidation
 {
     /**

@@ -1,11 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Fyyb;
 
 /**
  * Define the cors for use in APIs
+ *
+ * @author Joao Netto <https://github.com/jnetto23>
+ * @package Fyyb\express
  */
 class Cors
 {
