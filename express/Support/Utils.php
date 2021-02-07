@@ -34,10 +34,10 @@ class Utils
     /**
      * Convert Data to Array
      *
-     * @param Array $data
+     * @param [Array|stdClass] $data
      * @return array
      */
-    public static function convertDataToArray(array $data = []): array
+    public static function convertDataToArray($data): array
     {
         $formatedData = [];
 
