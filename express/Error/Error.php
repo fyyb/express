@@ -50,9 +50,9 @@ class Error
     }
 
     /**
-     * Private wakeup method prevent deserialization of the instance of this class.
+     * Public wakeup method prevent deserialization of the instance of this class.
      */
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 
